@@ -1,0 +1,18 @@
+{
+  "name": "wizard-primitive",
+  "version": "0.1.0",
+  "description": "A react wizard primitive - built with hooks!",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "react",
+    "wizard",
+    "stepper",
+    "hooks",
+    "primitive"
+  ],
+  "author": "Johannes Kling",
+  "license": "MIT"
+}
