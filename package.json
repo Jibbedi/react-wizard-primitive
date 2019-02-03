@@ -1,9 +1,16 @@
 {
-  "name": "wizard-primitive",
+  "name": "react-wizard-primitive",
   "version": "0.1.0",
   "description": "A react wizard primitive - built with hooks!",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "start": "rollup -cw",
+    "build": "rollup -c",
     "test": "test"
   },
   "keywords": [
@@ -11,8 +18,29 @@
     "wizard",
     "stepper",
     "hooks",
-    "primitive"
+    "primitive",
+    "typescript"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jibbedi/wizard-primitive.git"
+  },
+  "peerDependencies": {
+    "react": ">= 16.8.0"
+  },
+  "devDependencies": {
+    "react": "16.8.0-alpha.1",
+    "react-dom": "16.8.0-alpha.1",
+    "@types/react": "16.8.1",
+    "@types/react-dom": "16.0.11",
+    "prettier": "^1.16.4",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.3.1",
+    "rollup": "^1.1.2",
+    "rollup-plugin-typescript2": "^0.19.2"
+  },
   "author": "Johannes Kling",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {}
 }
