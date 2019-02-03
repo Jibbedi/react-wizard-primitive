@@ -89,7 +89,7 @@ export const WizardStep: FunctionComponent<WizardStepProps> = (
     );
   }
 
-  return <div>{props.children(wizardContext.getStep())}</div>;
+  return props.children(wizardContext.getStep());
 };
 
 export default Wizard;
