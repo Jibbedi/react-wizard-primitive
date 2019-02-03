@@ -69,7 +69,6 @@ export const Wizard: FunctionComponent = props => {
   const internalState = useWizard();
   return (
     <WizardContext.Provider value={{ ...internalState }}>
-      <div>test</div>
       {props.children}
     </WizardContext.Provider>
   );
