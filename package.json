@@ -11,7 +11,7 @@
   "scripts": {
     "start": "rollup -cw",
     "build": "rollup -c",
-    "test": "test"
+    "test": "exit 0"
   },
   "keywords": [
     "react",
