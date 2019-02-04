@@ -3,5 +3,6 @@ node_js: '8'
 install:
   - npm install -g codecov
   - npm install -g jest
+  - npm install -g ts-jest
 after_success::
   - codecov
