@@ -8,15 +8,15 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 
 <hr>
 
-![](https://img.shields.io/travis/Jibbedi/react-wizard-primitive.svg?style=flat)
-![https://codecov.io/gh/Jibbedi/react-wizard-primitive](https://img.shields.io/codecov/c/gh/Jibbedi/react-wizard-primitive.svg?style=flat)
-![https://github.com/Jibbedi/react-wizard-primitive/blob/master/LICENSE](https://img.shields.io/npm/l/react-wizard-primitive.svg?style=flat)
-![https://www.npmjs.com/package/react-wizard-primitive](https://img.shields.io/npm/v/react-wizard-primitive.svg?style=flat)
-![https://www.npmjs.com/package/react-wizard-primitive](https://img.shields.io/npm/types/react-wizard-primitive.svg?style=flat)
-![](https://img.shields.io/bundlephobia/min/react-wizard-primitive.svg?style=flat)
-![https://www.npmjs.com/package/react-wizard-primitive](https://img.shields.io/badge/Dependencies-None-brightgreen.svg?style=flat)
-![http://makeapullrequest.com/](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)
-![https://www.npmjs.com/package/react-wizard-primitive](https://img.shields.io/npm/dm/react-wizard-primitive.svg?style=flat)
+[![Build](https://img.shields.io/travis/Jibbedi/react-wizard-primitive.svg?style=flat)](https://travis-ci.org/Jibbedi/react-wizard-primitive)
+[![Coverage](https://img.shields.io/codecov/c/gh/Jibbedi/react-wizard-primitive.svg?style=flat)](https://codecov.io/gh/Jibbedi/react-wizard-primitive)
+[![License](https://img.shields.io/npm/l/react-wizard-primitive.svg?style=flat)](https://github.com/Jibbedi/react-wizard-primitive/blob/master/LICENSE)
+[![Version](https://img.shields.io/npm/v/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
+[![Types](https://img.shields.io/npm/types/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
+[![Size](https://img.shields.io/bundlephobia/min/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
+[![Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
+[![Pull Requests welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com/)
+[![Downloads](https://img.shields.io/npm/dm/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
 
 ## Table of Contents
 
