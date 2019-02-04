@@ -2,3 +2,4 @@
 .cache
 .rpt2_cache
 dist
+coverage
