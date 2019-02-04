@@ -2,6 +2,7 @@ import React, { FunctionComponent, useContext, useState } from "react";
 
 export interface UseWizard {
   activeStepIndex: number;
+  maxVisitedStepIndex: number;
   goToStep: (stepIndex: number) => void;
   nextStep: () => void;
   previousStep: () => void;
@@ -58,6 +59,7 @@ export const useWizard = () => {
 
   return {
     activeStepIndex,
+    maxVisitedStepIndex,
     goToStep,
     nextStep,
     previousStep,
