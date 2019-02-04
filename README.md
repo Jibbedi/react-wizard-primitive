@@ -156,7 +156,7 @@ Is the state the currently active one?
 ### hasBeenActive
 > boolean
 
-Has the step been active before, but is **not** currently active?
+Has the step been active before *or* is currently active?
 
 ### nextStep
 > function
