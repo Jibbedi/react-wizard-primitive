@@ -67,17 +67,23 @@ export const useWizard = () => {
   };
 };
 
-export const Wizard: FunctionComponent = props => {
+export interface WizardProps {
+  children: ((useWizard: UseWizard) => React.ReactNode) | React.ReactNode;
+}
+
+export const Wizard: FunctionComponent<WizardProps> = (props: WizardProps) => {
   const internalState = useWizard();
   return (
     <WizardContext.Provider value={{ ...internalState }}>
-      {props.children}
+      {typeof props.children === "function"
+        ? props.children(internalState)
+        : props.children}
     </WizardContext.Provider>
   );
 };
 
 export interface WizardStepProps {
-  children: (step: Step) => any;
+  children: (step: Step) => React.ReactNode | any;
 }
 
 export const WizardStep: FunctionComponent<WizardStepProps> = (
