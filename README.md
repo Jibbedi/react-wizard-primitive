@@ -1,12 +1,12 @@
-<div align="center">
-<h1>
-🧙 React Wizard Primitive
-</h1
-<div margin-bottom="20px">
+<h1 align="center">
+🧙 React Wizard Primitive 🦕
+</h1>
+
+<h4 align="center">
 Zero dependencies boilerplate for a wizard / stepper without any UI restrictions. Hooks available!
-</div>
+</h4>
+
 <hr>
-</div>
 
 ![](https://img.shields.io/travis/Jibbedi/react-wizard-primitive.svg?style=flat)
 ![https://codecov.io/gh/Jibbedi/react-wizard-primitive](https://img.shields.io/codecov/c/gh/Jibbedi/react-wizard-primitive.svg?style=flat)
