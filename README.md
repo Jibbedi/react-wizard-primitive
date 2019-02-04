@@ -234,10 +234,10 @@ Move to the step _before_ this step.
 
 > function
 
-Set this step to be currently active. Mark all following steps to not have been activated before.
+Set this step to be currently active. Set hasBeenActivated for all following steps to false.
 
 ### moveToStep
 
 > function
 
-Set this step to be currently active. All following steps will keep the activated step.
+Set this step to be currently active. All following steps will keep the activated state.
