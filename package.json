@@ -11,7 +11,7 @@
   "scripts": {
     "start": "rollup -cw",
     "build": "rollup -c",
-    "test": "jest"
+    "test": "./node_modules/.bin/jest"
   },
   "keywords": [
     "react",
