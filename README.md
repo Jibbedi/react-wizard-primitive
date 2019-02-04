@@ -64,6 +64,11 @@ The useWizard API returns the state and a set of helper functions.
 
 Currently active step
 
+### maxVisitedStepIndex
+> number
+
+Index of the furthest step, that has been activated
+
 ### nextStep
 > function
 
