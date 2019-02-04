@@ -6,7 +6,6 @@ const TestComponent = () => {
   const wizard = useWizard();
   const step1 = wizard.getStep();
   const step2 = wizard.getStep();
-  const step3 = wizard.getStep();
 
   return (
     <div>
@@ -19,22 +18,20 @@ const TestComponent = () => {
         </div>
       )}
       {step2.isActive && (
-        <div data-testid="step-2" onClick={step2.nextStep}>
+        <div data-testid="step-2" onClick={step2.previousStep}>
           Step 2
         </div>
       )}
-      {step3.isActive && <div data-testid="step-3">Step 3</div>}
     </div>
   );
 };
 
-test("it should handle forward correctly", () => {
+test("it should handle forwards correctly", () => {
   const container = render(<TestComponent />);
 
   // initially only first step should be visible
   expect(container.queryByTestId("step-1")).toBeTruthy();
   expect(container.queryByTestId("step-2")).toBeNull();
-  expect(container.queryByTestId("step-3")).toBeNull();
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
@@ -45,19 +42,24 @@ test("it should handle forward correctly", () => {
 
   expect(container.queryByTestId("step-1")).toBeNull();
   expect(container.queryByTestId("step-2")).toBeTruthy();
-  expect(container.queryByTestId("step-3")).toBeNull();
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("1");
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("1");
+});
 
-  // after click on second step, third step should be visible
+test("it should handle backwards correctly", async () => {
+  const container = render(<TestComponent />);
 
-  fireEvent.click(container.queryByTestId("step-2")!);
+  // move to step 2
 
+  fireEvent.click(container.queryByTestId("step-1")!);
   expect(container.queryByTestId("step-1")).toBeNull();
-  expect(container.queryByTestId("step-2")).toBeNull();
-  expect(container.queryByTestId("step-3")).toBeTruthy();
+  expect(container.queryByTestId("step-2")).toBeTruthy();
 
-  expect(container.queryByTestId("activeIndex")!.textContent).toBe("2");
-  expect(container.queryByTestId("maxIndex")!.textContent).toBe("2");
+  // move to previous
+  fireEvent.click(container.queryByTestId("step-2")!);
+  expect(container.queryByTestId("step-1")).toBeTruthy();
+
+  expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
+  expect(container.queryByTestId("maxIndex")!.textContent).toBe("1");
 });
