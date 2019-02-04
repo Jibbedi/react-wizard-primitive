@@ -8,7 +8,7 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 <hr>
 </div>
 
-![https://travis-ci.org/Jibbedi/react-wizard-primitive](https://img.shields.io/travis/jibbedi/react-wizard-primitive.svg?style=flat)
+![](https://img.shields.io/travis/Jibbedi/react-wizard-primitive.svg?style=flat)
 ![https://codecov.io/gh/Jibbedi/react-wizard-primitive](https://img.shields.io/codecov/c/gh/Jibbedi/react-wizard-primitive.svg?style=flat)
 ![https://github.com/Jibbedi/react-wizard-primitive/blob/master/LICENSE](https://img.shields.io/npm/l/react-wizard-primitive.svg?style=flat)
 ![https://www.npmjs.com/package/react-wizard-primitive](https://img.shields.io/npm/v/react-wizard-primitive.svg?style=flat)
