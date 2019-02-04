@@ -46,7 +46,7 @@ export const useWizard = () => {
     const stepState = {
       index: stepIndex,
       isActive: activeStepIndex === stepCheckIndex,
-      hasBeenActive: maxVisitedStepIndex > stepCheckIndex,
+      hasBeenActive: maxVisitedStepIndex >= stepCheckIndex,
       nextStep: () => goToStep(stepIndex + 1),
       previousStep: () => goToStep(Math.max(stepIndex - 1, 0)),
       resetToStep: () => goToStep(stepIndex, { resetMaxStepIndex: true }),
