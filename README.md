@@ -91,11 +91,17 @@ Call this to proceed to the next step
 
 Call this to proceed to the previous step
 
-### goToStep
+### moveToStep
 
 > function(stepIndex : number)
 
 Move to step with index _stepIndex_
+
+### resetToStep
+
+> function(stepIndex : number)
+
+Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps to false.
 
 ### getStep
 
@@ -139,7 +145,7 @@ You can _optionally_ provide a render prop, which gets passed the same return va
 The WizardStep component exposed a render props API and passes a _Step_ to it.
 The step index is determined by the order in the source code.
 
-## Example
+### Example
 
 ```jsx
 <Wizard>
@@ -234,7 +240,7 @@ Move to the step _before_ this step.
 
 > function
 
-Set this step to be currently active. Set hasBeenActivated for all following steps to false.
+Set this step to be currently active. Set hasBeenActive for all following steps to false.
 
 ### moveToStep
 
