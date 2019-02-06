@@ -4,6 +4,8 @@ export interface UseWizard {
   activeStepIndex: number;
   maxVisitedStepIndex: number;
   goToStep: (stepIndex: number) => void;
+  moveToStep: (stepIndex: number) => void;
+  resetToStep: (stepIndex: number) => void;
   nextStep: () => void;
   previousStep: () => void;
   getStep: () => Step;
@@ -40,6 +42,14 @@ export const useWizard = () => {
     goToStep(Math.max(activeStepIndex - 1, 0));
   };
 
+  const moveToStep = (stepIndex: number) => {
+    goToStep(stepIndex);
+  };
+
+  const resetToStep = (stepIndex: number) => {
+    goToStep(stepIndex, { resetMaxStepIndex: true });
+  };
+
   let stepCheckIndex = 0;
   const getStep: () => Step = () => {
     const stepIndex = stepCheckIndex;
@@ -63,7 +73,9 @@ export const useWizard = () => {
     goToStep,
     nextStep,
     previousStep,
-    getStep
+    getStep,
+    moveToStep,
+    resetToStep
   };
 };
 

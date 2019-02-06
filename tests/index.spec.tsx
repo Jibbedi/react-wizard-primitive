@@ -7,7 +7,14 @@ afterEach(cleanup);
 const TestComponent = () => {
   return (
     <Wizard>
-      {({ activeStepIndex, maxVisitedStepIndex, nextStep, previousStep }) => (
+      {({
+        activeStepIndex,
+        maxVisitedStepIndex,
+        nextStep,
+        previousStep,
+        resetToStep,
+        moveToStep
+      }) => (
         <div>
           <div data-testid="activeIndex">{activeStepIndex}</div>
           <div data-testid="maxIndex">{maxVisitedStepIndex}</div>
@@ -47,6 +54,18 @@ const TestComponent = () => {
           <button data-testid="prev-button" onClick={previousStep}>
             Previous Step
           </button>
+          <button
+            data-testid="global-move"
+            onClick={(_: never) => moveToStep(0)}
+          >
+            Move to first step
+          </button>
+          <button
+            data-testid="global-reset"
+            onClick={(_: never) => resetToStep(0)}
+          >
+            Reset to first step
+          </button>
         </div>
       )}
     </Wizard>
@@ -76,100 +95,129 @@ const TestComponentWithChildren = () => (
   </Wizard>
 );
 
-const checkForwardsHandling = (container: any) => {
-  // initially only first step should be visible
+const verifyOnlyFirstStepIsVisible = (container: any) => {
   expect(container.queryByTestId("step-1")).toBeTruthy();
   expect(container.queryByTestId("step-2")).toBeNull();
+};
 
-  // after click on first step, second step should be visible
-
-  fireEvent.click(container.queryByTestId("step-1")!);
-
+const verifyOnlySecondStepIsVisible = (container: any) => {
   expect(container.queryByTestId("step-1")).toBeNull();
   expect(container.queryByTestId("step-2")).toBeTruthy();
 };
 
 test("it should handle forwards correctly", () => {
-  const container = render(<TestComponent/>);
+  const container = render(<TestComponent />);
   checkForwardsHandling(container);
 });
 
+const checkForwardsHandling = (container: any) => {
+  // initially only first step should be visible
+  verifyOnlyFirstStepIsVisible(container);
+
+  // after click on first step, second step should be visible
+
+  fireEvent.click(container.queryByTestId("step-1")!);
+
+  verifyOnlySecondStepIsVisible(container);
+};
+
 test("it should handle backwards correctly", async () => {
-  const container = render(<TestComponent/>);
+  const container = render(<TestComponent />);
 
   // move to step 2
 
   fireEvent.click(container.queryByTestId("step-1")!);
-  expect(container.queryByTestId("step-1")).toBeNull();
-  expect(container.queryByTestId("step-2")).toBeTruthy();
+  verifyOnlySecondStepIsVisible(container);
 
   // move to previous
   fireEvent.click(container.queryByTestId("step-2")!);
-  expect(container.queryByTestId("step-1")).toBeTruthy();
-  expect(container.queryByTestId("step-2")).toBeNull();
+  verifyOnlyFirstStepIsVisible(container);
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("1");
 });
 
 test("it should work with global next and prev button", () => {
-  const container = render(<TestComponent/>);
+  const container = render(<TestComponent />);
 
   // verify first step is visible
-  expect(container.queryByTestId("step-1")).toBeTruthy();
-  expect(container.queryByTestId("step-2")).toBeNull();
+  verifyOnlyFirstStepIsVisible(container);
 
   // use global next step method
   fireEvent.click(container.queryByTestId("next-button")!);
-  expect(container.queryByTestId("step-1")).toBeNull();
-  expect(container.queryByTestId("step-2")).toBeTruthy();
+  verifyOnlySecondStepIsVisible(container);
 
   // use global prev step method
   fireEvent.click(container.queryByTestId("prev-button")!);
-  expect(container.queryByTestId("step-1")).toBeTruthy();
-  expect(container.queryByTestId("step-2")).toBeNull();
+  verifyOnlyFirstStepIsVisible(container);
 });
 
 test("it should move to first step, but leave maxIndex as is", () => {
-  const container = render(<TestComponent/>);
+  const container = render(<TestComponent />);
 
   // use global next step method
   fireEvent.click(container.queryByTestId("next-button")!);
-  expect(container.queryByTestId("step-1")).toBeNull();
-  expect(container.queryByTestId("step-2")).toBeTruthy();
+  verifyOnlySecondStepIsVisible(container);
 
   // move to first step
   fireEvent.click(container.queryByTestId("step-move")!);
-  expect(container.queryByTestId("step-1")).toBeTruthy();
-  expect(container.queryByTestId("step-2")).toBeNull();
+  verifyOnlyFirstStepIsVisible(container);
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("1");
 });
 
 test("it should reset to first step and reset maxIndex", () => {
-  const container = render(<TestComponent/>);
+  const container = render(<TestComponent />);
 
   // use global next step method
   fireEvent.click(container.queryByTestId("next-button")!);
-  expect(container.queryByTestId("step-1")).toBeNull();
-  expect(container.queryByTestId("step-2")).toBeTruthy();
+  verifyOnlySecondStepIsVisible(container);
 
   // move to first step
   fireEvent.click(container.queryByTestId("step-reset")!);
-  expect(container.queryByTestId("step-1")).toBeTruthy();
-  expect(container.queryByTestId("step-2")).toBeNull();
+  verifyOnlyFirstStepIsVisible(container);
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
 });
 
-test("it should reset to first step and reset maxIndex", () => {
-  const container = render(<TestComponentWithChildren/>);
+test("it should work with global moveToStep", () => {
+  const container = render(<TestComponent />);
+
+  // use global next step method
+  fireEvent.click(container.queryByTestId("next-button")!);
+  verifyOnlySecondStepIsVisible(container);
+
+  // move to first step using global moveToStep function
+  fireEvent.click(container.queryByTestId("global-move")!);
+  verifyOnlyFirstStepIsVisible(container);
+
+  expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
+  expect(container.queryByTestId("maxIndex")!.textContent).toBe("1");
+});
+
+test("it should work with global resetToStep and reset maxIndex", () => {
+  const container = render(<TestComponent />);
+
+  // use global next step method
+  fireEvent.click(container.queryByTestId("next-button")!);
+  verifyOnlySecondStepIsVisible(container);
+
+  // move to first step using global resetToStep function
+  fireEvent.click(container.queryByTestId("global-reset")!);
+  verifyOnlyFirstStepIsVisible(container);
+
+  expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
+  expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
+});
+
+test("it work with jsx instead of function as child", () => {
+  const container = render(<TestComponentWithChildren />);
   checkForwardsHandling(container);
 });
 
-test("Standalone WizardStep should throw exception", () => {
+test("it should throw an exception if WizardStep is used standalone", () => {
   expect(() => {
     render(<WizardStep>{() => null}</WizardStep>);
   }).toThrow();
