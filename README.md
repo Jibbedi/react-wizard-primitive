@@ -174,33 +174,24 @@ or with render props:
 
 ```jsx
 <Wizard>
-   {
-       ({activeStepIndex}) => <div>
-       
-            Active Step is: {activeStepIndex}
-       
-             <WizardStep>
-                {({ isActive, nextStep }) =>
-                  isActive && <div onClick={nextStep}>Step 1</div>
-                }
-              </WizardStep>
-            
-              <WizardStep>
-                {({ isActive, nextStep }) =>
-                  isActive && <div onClick={nextStep}>Step 2</div>
-                }
-              </WizardStep>
-            
-              <WizardStep>
-                {({ isActive, nextStep }) =>
-                  isActive && <div onClick={nextStep}>Step 3</div>
-                }
-              </WizardStep>   
-       </div>
-   }
+  {({ activeStepIndex }) => (
+    <div>
+      Active Step is: {activeStepIndex}
+      <WizardStep>
+        {({ isActive, nextStep }) =>
+          isActive && <div onClick={nextStep}>Step 1</div>
+        }
+      </WizardStep>
+      <WizardStep>
+        {({ isActive, nextStep }) =>
+          isActive && <div onClick={nextStep}>Step 2</div>
+        }
+      </WizardStep>
+      <WizardStep>{({ isActive, nextStep }) => isActive && <div onClick={nextStep}>Step 3</div>}</WizardStep>
+    </div>
+  )}
 </Wizard>
 ```
-
 
 ## Step
 
@@ -254,42 +245,41 @@ Set this step to be currently active. All following steps will keep the activate
 You can build nearly anything on top of react-wizard-primitive.
 Take a look at those examples to get a glimpse at what's possible.
 
-### [Basic Hooks](https://codesandbox.io/s/93z0j38q0y)
+### [🔗 Basic Hooks](https://codesandbox.io/s/93z0j38q0y)
 
 > This is a good starting point, if you want to see a basic hook implementation.
-  A classical wizard, where the steps are displayed one after another.
+> A classical wizard, which displays the steps one after the other.
 
 ![Basic Example](https://media.giphy.com/media/2UoCNCX8SH2hxY2hQA/giphy.gif)
 
-
-### [Basic Render Props](https://codesandbox.io/s/ppq9zx3zj7)
+### [🔗 Basic Render Props](https://codesandbox.io/s/ppq9zx3zj7)
 
 > Same example, but implemented with the render props API.
 
-### [Buildup Wizard](https://codesandbox.io/s/6j65768yqr)
+### [🔗 Buildup Wizard](https://codesandbox.io/s/6j65768yqr)
 
-> This example demonstrates, how you can build a wizard that displays the steps one after another, but keeps the already displayed steps around. 
+> This example demonstrates, how you can build a wizard that displays the steps one after another, but keeps the already displayed steps around.
 
 ![Buildup Wizard](https://media.giphy.com/media/fxzFlmPaffmgImTpM7/giphy.gif)
 
-### [Custom Abstraction](https://codesandbox.io/s/wwo9x7p1k)
+### [🔗 Custom Abstraction](https://codesandbox.io/s/wwo9x7p1k)
 
 > It can get tedious to work with the basic building blocks and repeat styling or display handling all over again. This example demonstrates how you can build your own abstractions on top of react-wizard-primitive.
 
 ```jsx
 <MyCustomWizard>
-    <MyCustomWizard.Step>
-        <TextFields />
-    </MyCustomWizard.Step>
-    <MyCustomWizard.Step>
-        <div>Just some other inline jsx</div>
-    </MyCustomWizard.Step>
-    <MyCustomWizard.Step>
-        <div>And another one</div>
-    </MyCustomWizard.Step>
-    <MyCustomWizard.Step>
-        <div>Last one</div>
-    </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <TextFields />
+  </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <div>Just some other inline jsx</div>
+  </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <div>And another one</div>
+  </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <div>Last one</div>
+  </MyCustomWizard.Step>
 </MyCustomWizard>
 ```
 
