@@ -243,7 +243,7 @@ Set this step to be currently active. All following steps will keep the activate
 ## Examples
 
 You can build nearly anything on top of react-wizard-primitive.
-Take a look at those examples to get an idea at what's possible.
+Take a look at those examples to get an idea of what's possible.
 
 ### [🔗 Basic Hooks](https://codesandbox.io/s/93z0j38q0y)
 
