@@ -30,7 +30,7 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 ## The Problem
 
 You need to implement a wizard / stepper, but have specific UI requirements.
-You want a flexible solution that suits a wide range of use cases. Check out the examples to see what's possible.
+You want a flexible solution that suits a wide range of use cases. Check out [the examples](#examples) to see what's possible.
 
 ## The Solution
 
