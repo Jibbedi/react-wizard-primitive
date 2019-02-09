@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Wizard, WizardStep } from "../src";
 import { cleanup, fireEvent, render } from "react-testing-library";
 
@@ -83,6 +83,46 @@ const TestComponentWithChildren = () => (
         )
       }
     </WizardStep>
+    <WizardStep>
+      {({ isActive, previousStep }) =>
+        isActive && (
+          <div data-testid="step-2" onClick={previousStep}>
+            Step 2
+          </div>
+        )
+      }
+    </WizardStep>
+  </Wizard>
+);
+
+const NestedWizardStep = () => {
+  const [state, updateState] = useState(1);
+
+  return (
+    <div>
+      {state}
+      <button
+        data-testid="force-rerender"
+        onClick={e => updateState(state + 1)}
+      >
+        Force Rerender
+      </button>
+      <WizardStep>
+        {({ isActive, nextStep }) =>
+          isActive && (
+            <div data-testid="step-1" onClick={nextStep}>
+              Step 1
+            </div>
+          )
+        }
+      </WizardStep>
+    </div>
+  );
+};
+
+const TestComponentWithNestedWizardStep = () => (
+  <Wizard>
+    <NestedWizardStep />
     <WizardStep>
       {({ isActive, previousStep }) =>
         isActive && (
@@ -212,7 +252,18 @@ test("it should work with global resetToStep and reset maxIndex", () => {
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
 });
 
-test("it work with jsx instead of function as child", () => {
+test("it should work with nested wizard steps", () => {
+  const container = render(<TestComponentWithNestedWizardStep />);
+  verifyOnlyFirstStepIsVisible(container);
+
+  // event in nested component forces rerender of that component
+  fireEvent.click(container.queryByTestId("force-rerender")!);
+
+  // it should still show first step
+  verifyOnlyFirstStepIsVisible(container);
+});
+
+test("it should work with jsx instead of function as child", () => {
   const container = render(<TestComponentWithChildren />);
   checkForwardsHandling(container);
 });

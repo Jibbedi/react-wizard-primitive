@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from "react";
+import React, { FunctionComponent, useContext, useRef, useState } from "react";
 
 export interface UseWizard {
   activeStepIndex: number;
@@ -109,7 +109,21 @@ export const WizardStep: FunctionComponent<WizardStepProps> = (
     );
   }
 
-  return props.children(wizardContext.getStep());
+  const contextRef = useRef<UseWizard | null>(null);
+  const stepRef = useRef<Step | null>(null);
+
+  /* 
+  We have to reuse the step information if the context has not change,
+  because otherwise getStep would return information about a newly created, and therefore wrong step.
+  Any changes to the wizard state will cause a new context.
+   */
+
+  if (contextRef.current !== wizardContext) {
+    contextRef.current = wizardContext;
+    stepRef.current = wizardContext.getStep();
+  }
+
+  return props.children(stepRef.current!);
 };
 
 export default Wizard;
