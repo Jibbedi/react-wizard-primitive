@@ -1,7 +1,7 @@
 {
   "name": "react-wizard-primitive",
-  "version": "1.1.1",
-  "description": "A react wizard primitive - built with hooks!",
+  "version": "1.1.2",
+  "description": "A react wizard primitive without UI restrictions - hooks and render props API available!",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -18,6 +18,7 @@
     "wizard",
     "stepper",
     "hooks",
+    "multistep",
     "primitive",
     "typescript"
   ],
