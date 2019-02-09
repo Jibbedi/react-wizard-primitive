@@ -137,7 +137,7 @@ return (
 The Wizard component uses **useWizard** internally and exposes a compound components API via Context.
 Use this as a top level component for the wizard and put any number of _WizardSteps_ in it.
 
-You can _optionally_ provide a render prop, which gets passed the same values that _useWizard_.
+You can _optionally_ provide a render prop, which gets passed the same values that _useWizard_ returns.
 
 ### WizardStep
 
@@ -196,7 +196,7 @@ or with render props:
 ## Step
 
 A step is the main data structure for the wizard.
-It contains the following informations:
+It contains the following information:
 
 ### index
 
