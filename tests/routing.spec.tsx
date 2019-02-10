@@ -33,6 +33,32 @@ const TestComponent = () => {
   );
 };
 
+const BuildUpWizardTestComponent = () => {
+  return (
+    <Wizard>
+      <WizardStep routeTitle="FirstStep">
+        {({ hasBeenActive, nextStep }) =>
+          hasBeenActive && (
+            <div data-testid="step-1" onClick={nextStep}>
+              Step 1
+            </div>
+          )
+        }
+      </WizardStep>
+
+      <WizardStep routeTitle="SecondStep">
+        {({ hasBeenActive, previousStep }) =>
+          hasBeenActive && (
+            <div data-testid="step-2" onClick={previousStep}>
+              Step 2
+            </div>
+          )
+        }
+      </WizardStep>
+    </Wizard>
+  );
+};
+
 const TestComponentWithPartialRouteTitles = () => {
   return (
     <Wizard>
@@ -135,6 +161,17 @@ test("it should move to second step if location hash matches", () => {
   container.rerender(<TestComponent />);
 
   verifyOnlySecondStepIsVisible(container);
+  expect(window.location.hash).toBe("#SecondStep");
+});
+
+test("it should set hasBeenActive to true for all preceding steps if hash location redirects to a different initial step", () => {
+  window.location.hash = "SecondStep";
+
+  const container = render(<BuildUpWizardTestComponent />);
+  container.rerender(<BuildUpWizardTestComponent />);
+
+  expect(container.queryByTestId("step-1")).toBeTruthy();
+  expect(container.queryByTestId("step-2")).toBeTruthy();
   expect(window.location.hash).toBe("#SecondStep");
 });
 
