@@ -1,6 +1,6 @@
 {
   "name": "react-wizard-primitive",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "A react wizard primitive without UI restrictions - hooks and render props API available!",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
