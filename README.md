@@ -25,6 +25,7 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 - [Hooks API](#hooks-api)
 - [Render Props API](#render-props-api)
 - [Step](#step)
+- [Routing](#routing)
 - [Examples](#examples)
 
 ## The Problem
@@ -106,10 +107,13 @@ Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps
 
 ### getStep
 
-> function : Step
+> function(options?) : Step
 
 Returns state for the current Step. This needs to be called for each wizard step you want to render.
-First call will return informations about the first step, second call about the second, etc.
+First call will return information about the first step, second call about the second, etc.
+
+It accepts an _optional_ options object, which takes a string routeTitle in.
+See [Routing](#routing) for further information.
 
 ### Example
 
@@ -145,6 +149,8 @@ You can _optionally_ provide a render prop, which gets passed the same values th
 
 The WizardStep component exposed a render props API and passes a _Step_ to it.
 The step index is determined by the order in the source code.
+
+It takes an optional string _routeTitle_ as a prop. See [Routing](#routing) for further information.
 
 ### Example
 
@@ -239,6 +245,53 @@ Set this step to be currently active. Set hasBeenActive for all following steps 
 > function
 
 Set this step to be currently active. All following steps will keep the activated state.
+
+## Routing
+
+### Basics
+
+Out of the box react-wizard-primitive supports an opt-in routing via hash.
+
+In order to use it, you need to specify a routeTitle in the getStep call or pass it as a prop to the _WizardStep_.
+The routeTitle will be used as the hash.
+
+If no routeTitle is provided, react-wizard-primitive won't make any changes to the URL.
+If only some steps are provided with a title, we assume that this happened by mistake, and won't change the url either.
+Instead we log a warning to the console, indicating which steps are missing a title.
+
+### Initial Hash Route
+
+If a hash is present when the wizard is first rendered, it will try to find a matching step to that hash and jump to it
+or otherwise jump to the initial step.
+
+You can use this behaviour to start the wizard at any given point.
+
+### Example
+
+```jsx
+<Wizard>
+  {"yourdomain.com/#/first-step"}
+  <WizardStep routeTitle="first-step">
+    {({ isActive, nextStep }) =>
+      isActive && <div onClick={nextStep}>Step 1</div>
+    }
+  </WizardStep>
+
+  {"yourdomain.com/#/second-step"}
+  <WizardStep routeTitle="second-step">
+    {({ isActive, nextStep }) =>
+      isActive && <div onClick={nextStep}>Step 2</div>
+    }
+  </WizardStep>
+
+  {"yourdomain.com/#/third-step"}
+  <WizardStep routeTitle="third-step">
+    {({ isActive, nextStep }) =>
+      isActive && <div onClick={nextStep}>Step 3</div>
+    }
+  </WizardStep>
+</Wizard>
+```
 
 ## Examples
 
