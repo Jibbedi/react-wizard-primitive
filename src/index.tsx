@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
-import { addHashChangeListener, getRoutingHash, removeHashChangeListener, setRoutingHash } from "./routing";
+import { getRoutingHash, setRoutingHash } from "./routing";
 
 export interface GetStepOptions {
   routeTitle?: string;
@@ -39,30 +39,17 @@ export const useWizard = () => {
   let stepCheckIndex = 0;
 
   useEffect(() => {
-    const goToNewStepIndexForRoutingHash = () => {
-      const hash = getRoutingHash();
-      const newStepIndex = stepTitles.indexOf(hash);
-      if (newStepIndex >= 0) {
-        goToStep(newStepIndex);
-      }
-    };
-
-    // check route initially
-    goToNewStepIndexForRoutingHash();
-
-    // setup event listener for changed made to the url
-    const handleHashChange = () => {
-      goToNewStepIndexForRoutingHash();
-    };
-
-    addHashChangeListener(handleHashChange);
-    return () => removeHashChangeListener(handleHashChange);
+    const hash = getRoutingHash();
+    const newStepIndex = stepTitles.indexOf(hash);
+    if (newStepIndex >= 0) {
+      goToStep(newStepIndex);
+    }
   }, []);
 
   // update location hash
   useEffect(() => {
     const stepsWithTitle = stepTitles.filter(title => !!title);
-    const allStepTitlesAvailable = stepsWithTitle.length === stepCheckIndex - 1;
+    const allStepTitlesAvailable = stepsWithTitle.length === stepCheckIndex;
     const allStepTitlesMissing = stepsWithTitle.length === 0;
 
     if (allStepTitlesAvailable) {
@@ -74,11 +61,11 @@ export const useWizard = () => {
     if (!allStepTitlesMissing) {
       const indicesOfMissingTitles = stepTitles
         .map((title, index) => (!title ? index : null))
-        .filter(title => !!title);
+        .filter(title => title !== null);
 
       console.warn(
         `You have not specified a title for the steps with the indices: ${indicesOfMissingTitles.join(
-          ","
+          ", "
         )}`
       );
 
@@ -160,6 +147,7 @@ export const Wizard: FunctionComponent<WizardProps> = (props: WizardProps) => {
 
 export interface WizardStepProps {
   children: (step: Step) => React.ReactNode | any;
+  routeTitle?: string;
 }
 
 export const WizardStep: FunctionComponent<WizardStepProps> = (
@@ -184,7 +172,9 @@ export const WizardStep: FunctionComponent<WizardStepProps> = (
 
   if (contextRef.current !== wizardContext) {
     contextRef.current = wizardContext;
-    stepRef.current = wizardContext.getStep();
+    stepRef.current = wizardContext.getStep({
+      routeTitle: props.routeTitle
+    });
   }
 
   return props.children(stepRef.current!);
