@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useContext, useRef, useState } from "react";
+import React, { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
+import { getRoutingHash, setRoutingHash } from "./routing";
+
+export interface GetStepOptions {
+  routeTitle?: string;
+}
 
 export interface UseWizard {
   activeStepIndex: number;
@@ -8,7 +13,7 @@ export interface UseWizard {
   resetToStep: (stepIndex: number) => void;
   nextStep: () => void;
   previousStep: () => void;
-  getStep: () => Step;
+  getStep: (options?: GetStepOptions) => Step;
 }
 
 export interface Step {
@@ -27,11 +32,74 @@ export const useWizard = () => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [maxVisitedStepIndex, setMaxVisitedStepIndex] = useState(0);
 
+  // each getStep call with add the corresponding step title or undefined if none is provided
+  const stepTitles: (string | undefined)[] = [];
+
+  // each getStep call will increase the counter by one
+  let stepCheckIndex = 0;
+
+  useEffect(() => {
+    const hash = getRoutingHash();
+    const newStepIndex = stepTitles.indexOf(hash);
+    if (newStepIndex >= 0) {
+      goToStep(newStepIndex);
+    }
+  }, []);
+
+  // update location hash
+  useEffect(() => {
+    const stepsWithTitle = stepTitles.filter(title => !!title);
+    const allStepTitlesAvailable = stepsWithTitle.length === stepCheckIndex;
+    const allStepTitlesMissing = stepsWithTitle.length === 0;
+
+    if (allStepTitlesAvailable) {
+      const stepTitle = stepTitles[activeStepIndex]!;
+      setRoutingHash(stepTitle);
+      return;
+    }
+
+    if (!allStepTitlesMissing) {
+      const indicesOfMissingTitles = stepTitles
+        .map((title, index) => (!title ? index : null))
+        .filter(title => title !== null);
+
+      console.warn(
+        `You have not specified a title for the steps with the indices: ${indicesOfMissingTitles.join(
+          ", "
+        )}`
+      );
+
+      return;
+    }
+  }, [activeStepIndex]);
+
+  const getStep: (options?: GetStepOptions) => Step = ({
+    routeTitle
+  }: GetStepOptions = {}) => {
+    const stepIndex = stepCheckIndex;
+
+    stepTitles.push(routeTitle);
+
+    const stepState = {
+      index: stepIndex,
+      isActive: activeStepIndex === stepCheckIndex,
+      hasBeenActive: maxVisitedStepIndex >= stepCheckIndex,
+      nextStep: () => goToStep(stepIndex + 1),
+      previousStep: () => goToStep(Math.max(stepIndex - 1, 0)),
+      resetToStep: () => goToStep(stepIndex, { resetMaxStepIndex: true }),
+      moveToStep: () => goToStep(stepIndex)
+    };
+    stepCheckIndex++;
+    return stepState;
+  };
+
   const goToStep = (stepIndex: number, { resetMaxStepIndex = false } = {}) => {
-    setActiveStepIndex(stepIndex);
-    setMaxVisitedStepIndex(
-      resetMaxStepIndex ? stepIndex : Math.max(stepIndex, maxVisitedStepIndex)
-    );
+    if (activeStepIndex !== stepIndex) {
+      setActiveStepIndex(stepIndex);
+      setMaxVisitedStepIndex(
+        resetMaxStepIndex ? stepIndex : Math.max(stepIndex, maxVisitedStepIndex)
+      );
+    }
   };
 
   const nextStep = () => {
@@ -48,23 +116,6 @@ export const useWizard = () => {
 
   const resetToStep = (stepIndex: number) => {
     goToStep(stepIndex, { resetMaxStepIndex: true });
-  };
-
-  let stepCheckIndex = 0;
-  const getStep: () => Step = () => {
-    const stepIndex = stepCheckIndex;
-
-    const stepState = {
-      index: stepIndex,
-      isActive: activeStepIndex === stepCheckIndex,
-      hasBeenActive: maxVisitedStepIndex >= stepCheckIndex,
-      nextStep: () => goToStep(stepIndex + 1),
-      previousStep: () => goToStep(Math.max(stepIndex - 1, 0)),
-      resetToStep: () => goToStep(stepIndex, { resetMaxStepIndex: true }),
-      moveToStep: () => goToStep(stepIndex)
-    };
-    stepCheckIndex++;
-    return stepState;
   };
 
   return {
@@ -96,6 +147,7 @@ export const Wizard: FunctionComponent<WizardProps> = (props: WizardProps) => {
 
 export interface WizardStepProps {
   children: (step: Step) => React.ReactNode | any;
+  routeTitle?: string;
 }
 
 export const WizardStep: FunctionComponent<WizardStepProps> = (
@@ -120,7 +172,9 @@ export const WizardStep: FunctionComponent<WizardStepProps> = (
 
   if (contextRef.current !== wizardContext) {
     contextRef.current = wizardContext;
-    stepRef.current = wizardContext.getStep();
+    stepRef.current = wizardContext.getStep({
+      routeTitle: props.routeTitle
+    });
   }
 
   return props.children(stepRef.current!);

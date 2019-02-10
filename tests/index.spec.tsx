@@ -1,8 +1,31 @@
 import React, { useState } from "react";
-import { Wizard, WizardStep } from "../src";
+import { useWizard, Wizard, WizardStep } from "../src";
 import { cleanup, fireEvent, render } from "react-testing-library";
+import { Simulate } from "react-dom/test-utils";
 
 afterEach(cleanup);
+
+const HooksComponent = () => {
+  const wizard = useWizard();
+  const step1 = wizard.getStep();
+  const step2 = wizard.getStep();
+
+  return (
+    <div>
+      {step1.isActive && (
+        <div data-testid="step-1" onClick={step1.nextStep}>
+          Step 1
+        </div>
+      )}
+
+      {step2.isActive && (
+        <div data-testid="step-2" onClick={step2.nextStep}>
+          Step 2
+        </div>
+      )}
+    </div>
+  );
+};
 
 const TestComponent = () => {
   return (
@@ -145,11 +168,6 @@ const verifyOnlySecondStepIsVisible = (container: any) => {
   expect(container.queryByTestId("step-2")).toBeTruthy();
 };
 
-test("it should handle forwards correctly", () => {
-  const container = render(<TestComponent />);
-  checkForwardsHandling(container);
-});
-
 const checkForwardsHandling = (container: any) => {
   // initially only first step should be visible
   verifyOnlyFirstStepIsVisible(container);
@@ -160,6 +178,16 @@ const checkForwardsHandling = (container: any) => {
 
   verifyOnlySecondStepIsVisible(container);
 };
+
+test("it should handle forward correctly with hooks", () => {
+  const container = render(<HooksComponent />);
+  checkForwardsHandling(container);
+});
+
+test("it should handle forwards correctly", () => {
+  const container = render(<TestComponent />);
+  checkForwardsHandling(container);
+});
 
 test("it should handle backwards correctly", async () => {
   const container = render(<TestComponent />);
