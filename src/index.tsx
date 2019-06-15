@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { getRoutingHash, setRoutingHash } from "./routing";
 
 export interface GetStepOptions {
@@ -7,7 +13,7 @@ export interface GetStepOptions {
 
 export interface UseWizard {
   activeStepIndex: number;
-  maxVisitedStepIndex: number;
+  maxActivatedStepIndex: number;
   goToStep: (stepIndex: number) => void;
   moveToStep: (stepIndex: number) => void;
   resetToStep: (stepIndex: number) => void;
@@ -30,7 +36,7 @@ const WizardContext = React.createContext<UseWizard | null>(null);
 
 export const useWizard = () => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [maxVisitedStepIndex, setMaxVisitedStepIndex] = useState(0);
+  const [maxActivatedStepIndex, setMaxActivatedStepIndex] = useState(-1);
 
   // each getStep call with add the corresponding step title or undefined if none is provided
   const stepTitles: (string | undefined)[] = [];
@@ -83,7 +89,7 @@ export const useWizard = () => {
     const stepState = {
       index: stepIndex,
       isActive: activeStepIndex === stepCheckIndex,
-      hasBeenActive: maxVisitedStepIndex >= stepCheckIndex,
+      hasBeenActive: maxActivatedStepIndex >= stepCheckIndex,
       nextStep: () => goToStep(stepIndex + 1),
       previousStep: () => goToStep(Math.max(stepIndex - 1, 0)),
       resetToStep: () => goToStep(stepIndex, { resetMaxStepIndex: true }),
@@ -96,8 +102,10 @@ export const useWizard = () => {
   const goToStep = (stepIndex: number, { resetMaxStepIndex = false } = {}) => {
     if (activeStepIndex !== stepIndex) {
       setActiveStepIndex(stepIndex);
-      setMaxVisitedStepIndex(
-        resetMaxStepIndex ? stepIndex : Math.max(stepIndex, maxVisitedStepIndex)
+      setMaxActivatedStepIndex(
+        resetMaxStepIndex
+          ? stepIndex - 1
+          : Math.max(activeStepIndex, maxActivatedStepIndex)
       );
     }
   };
@@ -120,7 +128,7 @@ export const useWizard = () => {
 
   return {
     activeStepIndex,
-    maxVisitedStepIndex,
+    maxActivatedStepIndex,
     goToStep,
     nextStep,
     previousStep,

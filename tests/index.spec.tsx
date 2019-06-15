@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useWizard, Wizard, WizardStep } from "../src";
 import { cleanup, fireEvent, render } from "react-testing-library";
-import { Simulate } from "react-dom/test-utils";
 
 afterEach(cleanup);
 
@@ -32,7 +31,7 @@ const TestComponent = () => {
     <Wizard>
       {({
         activeStepIndex,
-        maxVisitedStepIndex,
+        maxActivatedStepIndex,
         nextStep,
         previousStep,
         resetToStep,
@@ -40,14 +39,19 @@ const TestComponent = () => {
       }) => (
         <div>
           <div data-testid="activeIndex">{activeStepIndex}</div>
-          <div data-testid="maxIndex">{maxVisitedStepIndex}</div>
+          <div data-testid="maxIndex">{maxActivatedStepIndex}</div>
 
           <WizardStep>
-            {({ isActive, nextStep, resetToStep, moveToStep }) =>
+            {({ isActive, hasBeenActive, nextStep, resetToStep, moveToStep }) =>
               isActive ? (
-                <div data-testid="step-1" onClick={nextStep}>
-                  Step 1
-                </div>
+                <>
+                  <div data-testid="step-1" onClick={nextStep}>
+                    Step 1
+                  </div>
+                  {!hasBeenActive && (
+                    <div data-testid="first-render">first render</div>
+                  )}
+                </>
               ) : (
                 <div>
                   <button data-testid="step-move" onClick={moveToStep}>
@@ -247,7 +251,7 @@ test("it should reset to first step and reset maxIndex", () => {
   verifyOnlyFirstStepIsVisible(container);
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
-  expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
+  expect(container.queryByTestId("maxIndex")!.textContent).toBe("-1");
 });
 
 test("it should work with global moveToStep", () => {
@@ -265,6 +269,18 @@ test("it should work with global moveToStep", () => {
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("1");
 });
 
+test("it should hasBeenActive to false on first render", () => {
+  const container = render(<TestComponent />);
+
+  verifyOnlyFirstStepIsVisible(container);
+  expect(container.getByTestId("first-render")).toBeTruthy();
+  fireEvent.click(container.queryByTestId("next-button")!);
+  verifyOnlySecondStepIsVisible(container);
+  fireEvent.click(container.queryByTestId("prev-button")!);
+  verifyOnlyFirstStepIsVisible(container);
+  expect(container.queryByTestId("first-render")).toBeNull();
+});
+
 test("it should work with global resetToStep and reset maxIndex", () => {
   const container = render(<TestComponent />);
 
@@ -277,7 +293,7 @@ test("it should work with global resetToStep and reset maxIndex", () => {
   verifyOnlyFirstStepIsVisible(container);
 
   expect(container.queryByTestId("activeIndex")!.textContent).toBe("0");
-  expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
+  expect(container.queryByTestId("maxIndex")!.textContent).toBe("-1");
 });
 
 test("it should work with nested wizard steps", () => {

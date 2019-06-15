@@ -171,7 +171,7 @@ test("it should set hasBeenActive to true for all preceding steps if hash locati
   container.rerender(<BuildUpWizardTestComponent />);
 
   expect(container.queryByTestId("step-1")).toBeTruthy();
-  expect(container.queryByTestId("step-2")).toBeTruthy();
+  expect(container.queryByTestId("step-2")).toBeFalsy();
   expect(window.location.hash).toBe("#SecondStep");
 });
 
