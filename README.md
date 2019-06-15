@@ -19,6 +19,7 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 [![Downloads](https://img.shields.io/npm/dm/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
 
 ## Table of Contents
+
 - [Upgrading from v1](#upgrading-from-v1)
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
@@ -344,8 +345,16 @@ Take a look at those examples to get an idea of what's possible.
 
 ![Buildup Wizard](https://media.giphy.com/media/8PBsWFyO1haMFsbQLp/giphy.gif)
 
-
 ## Contributors
 
+<!-- prettier-ignore -->
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="https://turnpro.in"><img src="https://avatars3.githubusercontent.com/u/19505532?v=4" width="100px;" alt="Johannes Kling"/><br /><sub><b>Johannes Kling</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Code">💻</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Documentation">📖</a> <a href="#ideas-Jibbedi" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-Jibbedi" title="Examples">💡</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Tests">⚠️</a></td>
+    <td align="center"><a href="http://www.josemiguel.org"><img src="https://avatars0.githubusercontent.com/u/6037190?v=4" width="100px;" alt="Jose Miguel Bejarano"/><br /><sub><b>Jose Miguel Bejarano</b></sub></a><br /><a href="#ideas-xDae" title="Ideas, Planning, & Feedback">🤔</a></td>
+  </tr>
+</table>
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
