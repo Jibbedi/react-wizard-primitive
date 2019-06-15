@@ -19,7 +19,7 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 [![Downloads](https://img.shields.io/npm/dm/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
 
 ## Table of Contents
-
+- [Upgrading from v1](#upgrading-from-v1)
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
 - [Hooks API](#hooks-api)
@@ -27,6 +27,11 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 - [Step](#step)
 - [Routing](#routing)
 - [Examples](#examples)
+
+## Upgrading from v1
+
+- `hasBeenActive` is now false on first render. To achieve the previous behaviour you can modify your code to `hasBeenActive || isActive`
+- `maxVisitedStepIndex` has been renamed to `maxActivatedStepIndex` and will not include the currently active step if it's first rendered. To achieve the previous behaviour you can modify your code to `Math.max(maxActivatedStepIndex, activeStepIndex)`
 
 ## The Problem
 
@@ -75,7 +80,7 @@ The useWizard API returns the state and a set of helper functions.
 
 Currently active step
 
-### maxVisitedStepIndex
+### maxActivatedStepIndex
 
 > number
 
@@ -103,7 +108,7 @@ Move to step with index _stepIndex_
 
 > function(stepIndex : number)
 
-Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps to false.
+Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false.
 
 ### getStep
 
@@ -220,7 +225,7 @@ Is the state the currently active one?
 
 > boolean
 
-Has the step been active before _or_ is currently active?
+Has the step been active before?
 
 ### nextStep
 

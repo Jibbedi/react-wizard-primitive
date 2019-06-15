@@ -1,3 +1,8 @@
+## 2.0.0 (June 15, 2019)
+
+- breaking change: `hasBeenActive` is now false on first render. To achieve the previous behaviour you can modify your code to `hasBeenActive || isActive`
+- breaking change: `maxVisitedStepIndex` has been renamed to `maxActivatedStepIndex` and will not include the currently active step if it's first rendered. To achieve the previous behaviour you can modify your code to `Math.max(maxActivatedStepIndex, activeStepIndex)`
+
 ## 1.2.0 (February 10, 2019)
 - feature: Added routing support. See README#Routing for details.
 
