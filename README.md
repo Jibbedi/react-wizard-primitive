@@ -27,6 +27,7 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 - [Step](#step)
 - [Routing](#routing)
 - [Examples](#examples)
+- [Contributors](#contributors)
 
 ## Upgrading from v1
 
@@ -342,3 +343,9 @@ Take a look at those examples to get an idea of what's possible.
 ```
 
 ![Buildup Wizard](https://media.giphy.com/media/8PBsWFyO1haMFsbQLp/giphy.gif)
+
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
