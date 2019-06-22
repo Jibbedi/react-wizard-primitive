@@ -3,6 +3,7 @@ import { useWizard, Wizard, WizardStep } from "../src";
 import { cleanup, fireEvent, render } from "react-testing-library";
 
 afterEach(cleanup);
+afterEach(jest.clearAllMocks);
 
 const HooksComponent = () => {
   const wizard = useWizard();
@@ -26,9 +27,9 @@ const HooksComponent = () => {
   );
 };
 
-const TestComponent = ({ initialStepIndex = 0 }) => {
+const TestComponent = ({ initialStepIndex = 0, onChange = null }: any) => {
   return (
-    <Wizard initialStepIndex={initialStepIndex}>
+    <Wizard initialStepIndex={initialStepIndex} onChange={onChange}>
       {({
         activeStepIndex,
         maxActivatedStepIndex,
@@ -323,4 +324,25 @@ test("it should respect initial step index", () => {
 
   verifyOnlySecondStepIsVisible(container);
   expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
+});
+
+test("it should call onChange handler", () => {
+  const handler = jest.fn();
+
+  const container = render(<TestComponent onChange={handler} />);
+  expect(handler).not.toHaveBeenCalled();
+
+  fireEvent.click(container.queryByTestId("next-button")!);
+  expect(handler).toHaveBeenCalledWith({
+    previousStepIndex: 0,
+    newStepIndex: 1,
+    maxActivatedStepIndex: 0
+  });
+
+  fireEvent.click(container.queryByTestId("prev-button")!);
+  expect(handler).toHaveBeenCalledWith({
+    previousStepIndex: 1,
+    newStepIndex: 0,
+    maxActivatedStepIndex: 1
+  });
 });
