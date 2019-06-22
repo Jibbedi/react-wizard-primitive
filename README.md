@@ -75,45 +75,57 @@ import { Wizard, WizardStep } from "react-wizard-primitive";
 
 ## Hooks API
 
+### Props
+
+You can optionally pass an `UseWizardProps` into the hooks.
+
+#### initialStepIndex
+
+> number
+
+Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
+
+### Return Values
+
 The useWizard API returns the state and a set of helper functions.
 
-### activeStepIndex
+#### activeStepIndex
 
 > number
 
 Currently active step
 
-### maxActivatedStepIndex
+#### maxActivatedStepIndex
 
 > number
 
 Index of the furthest step, that has been activated
 
-### nextStep
+#### nextStep
 
 > function
 
 Call this to proceed to the next step
 
-### previousStep
+#### previousStep
 
 > function
 
 Call this to proceed to the previous step
 
-### moveToStep
+#### moveToStep
 
 > function(stepIndex : number)
 
 Move to step with index _stepIndex_
 
-### resetToStep
+#### resetToStep
 
 > function(stepIndex : number)
 
 Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false.
 
-### getStep
+#### getStep
 
 > function(options?) : Step
 
@@ -150,6 +162,14 @@ The Wizard component uses **useWizard** internally and exposes a compound compon
 Use this as a top level component for the wizard and put any number of _WizardSteps_ in it.
 
 You can _optionally_ provide a render prop, which gets passed the same values that _useWizard_ returns.
+
+#### Props
+
+#### initialStepIndex
+
+> number
+
+Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
 
 ### WizardStep
 
