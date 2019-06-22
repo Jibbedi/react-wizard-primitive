@@ -75,45 +75,57 @@ import { Wizard, WizardStep } from "react-wizard-primitive";
 
 ## Hooks API
 
+### Props
+
+You can optionally pass an `UseWizardProps` into the hooks.
+
+#### initialStepIndex
+
+> number
+
+Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
+
+### Return Values
+
 The useWizard API returns the state and a set of helper functions.
 
-### activeStepIndex
+#### activeStepIndex
 
 > number
 
 Currently active step
 
-### maxActivatedStepIndex
+#### maxActivatedStepIndex
 
 > number
 
 Index of the furthest step, that has been activated
 
-### nextStep
+#### nextStep
 
 > function
 
 Call this to proceed to the next step
 
-### previousStep
+#### previousStep
 
 > function
 
 Call this to proceed to the previous step
 
-### moveToStep
+#### moveToStep
 
 > function(stepIndex : number)
 
 Move to step with index _stepIndex_
 
-### resetToStep
+#### resetToStep
 
 > function(stepIndex : number)
 
 Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false.
 
-### getStep
+#### getStep
 
 > function(options?) : Step
 
@@ -150,6 +162,14 @@ The Wizard component uses **useWizard** internally and exposes a compound compon
 Use this as a top level component for the wizard and put any number of _WizardSteps_ in it.
 
 You can _optionally_ provide a render prop, which gets passed the same values that _useWizard_ returns.
+
+#### Props
+
+#### initialStepIndex
+
+> number
+
+Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
 
 ### WizardStep
 
@@ -355,6 +375,7 @@ Take a look at those examples to get an idea of what's possible.
   <tr>
     <td align="center"><a href="https://turnpro.in"><img src="https://avatars3.githubusercontent.com/u/19505532?v=4" width="100px;" alt="Johannes Kling"/><br /><sub><b>Johannes Kling</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Code">💻</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Documentation">📖</a> <a href="#ideas-Jibbedi" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-Jibbedi" title="Examples">💡</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Tests">⚠️</a></td>
     <td align="center"><a href="http://www.josemiguel.org"><img src="https://avatars0.githubusercontent.com/u/6037190?v=4" width="100px;" alt="Jose Miguel Bejarano"/><br /><sub><b>Jose Miguel Bejarano</b></sub></a><br /><a href="#ideas-xDae" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/kaYcee"><img src="https://avatars1.githubusercontent.com/u/1464822?v=4" width="100px;" alt="kaYcee"/><br /><sub><b>kaYcee</b></sub></a><br /><a href="#ideas-kaYcee" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 

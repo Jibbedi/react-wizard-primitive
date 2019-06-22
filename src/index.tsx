@@ -32,11 +32,17 @@ export interface Step {
   moveToStep: () => void;
 }
 
+export interface UseWizardProps {
+  initialStepIndex?: number;
+}
+
 const WizardContext = React.createContext<UseWizard | null>(null);
 
-export const useWizard = () => {
-  const [activeStepIndex, setActiveStepIndex] = useState(0);
-  const [maxActivatedStepIndex, setMaxActivatedStepIndex] = useState(-1);
+export const useWizard = ({ initialStepIndex = 0 }: UseWizardProps = {}) => {
+  const [activeStepIndex, setActiveStepIndex] = useState(initialStepIndex);
+  const [maxActivatedStepIndex, setMaxActivatedStepIndex] = useState(
+    initialStepIndex - 1
+  );
 
   // each getStep call with add the corresponding step title or undefined if none is provided
   const stepTitles: (string | undefined)[] = [];
@@ -140,10 +146,11 @@ export const useWizard = () => {
 
 export interface WizardProps {
   children: ((useWizard: UseWizard) => React.ReactNode) | React.ReactNode;
+  initialStepIndex?: number;
 }
 
 export const Wizard: FunctionComponent<WizardProps> = (props: WizardProps) => {
-  const internalState = useWizard();
+  const internalState = useWizard({ initialStepIndex: props.initialStepIndex });
   return (
     <WizardContext.Provider value={{ ...internalState }}>
       {typeof props.children === "function"
