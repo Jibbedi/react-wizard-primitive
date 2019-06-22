@@ -1,6 +1,6 @@
 {
   "name": "react-wizard-primitive",
-  "version": "2.0.0",
+  "version": "0.0.0-development",
   "description": "A react wizard primitive without UI restrictions - hooks and render props API available!",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
@@ -11,7 +11,9 @@
   "scripts": {
     "start": "rollup -cw",
     "build": "rollup -c",
-    "test": "./node_modules/.bin/jest"
+    "commit": "./node_modules/.bin/git-cz",
+    "test": "./node_modules/.bin/jest",
+    "semantic-release": "semantic-release"
   },
   "keywords": [
     "react",
@@ -34,6 +36,9 @@
     "@types/react": "16.8.1",
     "@types/react-dom": "16.0.11",
     "all-contributors-cli": "^6.7.0",
+    "commitizen": "3.1.1",
+    "cz-conventional-changelog": "2.1.0",
+    "husky": "2.4.1",
     "jest": "^24.0.0",
     "prettier": "^1.16.4",
     "react": "16.8.0-alpha.1",
@@ -45,9 +50,21 @@
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.3.1"
+    "typescript": "^3.3.1",
+    "semantic-release": "^15.13.16",
+    "validate-commit-msg": "2.14.0"
   },
   "author": "Johannes Kling",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {},
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "validate-commit-msg"
+    }
+  }
 }
