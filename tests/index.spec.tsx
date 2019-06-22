@@ -26,9 +26,9 @@ const HooksComponent = () => {
   );
 };
 
-const TestComponent = () => {
+const TestComponent = ({ initialStepIndex = 0 }) => {
   return (
-    <Wizard>
+    <Wizard initialStepIndex={initialStepIndex}>
       {({
         activeStepIndex,
         maxActivatedStepIndex,
@@ -316,4 +316,11 @@ test("it should throw an exception if WizardStep is used standalone", () => {
   expect(() => {
     render(<WizardStep>{() => null}</WizardStep>);
   }).toThrow();
+});
+
+test("it should respect initial step index", () => {
+  const container = render(<TestComponent initialStepIndex={1} />);
+
+  verifyOnlySecondStepIsVisible(container);
+  expect(container.queryByTestId("maxIndex")!.textContent).toBe("0");
 });
