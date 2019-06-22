@@ -85,6 +85,12 @@ You can optionally pass an `UseWizardProps` into the hooks.
 
 Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
 
+#### onChange
+
+> function({newStepIndex : number, previousStepIndex: number, maxActivatedStepIndex : number})
+
+Is called every time the wizard step changes.
+
 ### Return Values
 
 The useWizard API returns the state and a set of helper functions.
@@ -170,6 +176,12 @@ You can _optionally_ provide a render prop, which gets passed the same values th
 > number
 
 Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
+
+#### onChange
+
+> function({newStepIndex : number, previousStepIndex: number, maxActivatedStepIndex : number})
+
+Is called every time the wizard step changes.
 
 ### WizardStep
 

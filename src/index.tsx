@@ -32,13 +32,23 @@ export interface Step {
   moveToStep: () => void;
 }
 
+type OnChangeHandler = (props: {
+  newStepIndex: number;
+  previousStepIndex: number;
+  maxActivatedStepIndex: number;
+}) => void;
+
 export interface UseWizardProps {
   initialStepIndex?: number;
+  onChange?: OnChangeHandler;
 }
 
 const WizardContext = React.createContext<UseWizard | null>(null);
 
-export const useWizard = ({ initialStepIndex = 0 }: UseWizardProps = {}) => {
+export const useWizard = ({
+  initialStepIndex = 0,
+  onChange
+}: UseWizardProps = {}) => {
   const [activeStepIndex, setActiveStepIndex] = useState(initialStepIndex);
   const [maxActivatedStepIndex, setMaxActivatedStepIndex] = useState(
     initialStepIndex - 1
@@ -107,12 +117,19 @@ export const useWizard = ({ initialStepIndex = 0 }: UseWizardProps = {}) => {
 
   const goToStep = (stepIndex: number, { resetMaxStepIndex = false } = {}) => {
     if (activeStepIndex !== stepIndex) {
+      const newMaxStepIndex = resetMaxStepIndex
+        ? stepIndex - 1
+        : Math.max(activeStepIndex, maxActivatedStepIndex);
+
+      onChange &&
+        onChange({
+          previousStepIndex: activeStepIndex,
+          newStepIndex: stepIndex,
+          maxActivatedStepIndex: newMaxStepIndex
+        });
+
       setActiveStepIndex(stepIndex);
-      setMaxActivatedStepIndex(
-        resetMaxStepIndex
-          ? stepIndex - 1
-          : Math.max(activeStepIndex, maxActivatedStepIndex)
-      );
+      setMaxActivatedStepIndex(newMaxStepIndex);
     }
   };
 
@@ -147,10 +164,14 @@ export const useWizard = ({ initialStepIndex = 0 }: UseWizardProps = {}) => {
 export interface WizardProps {
   children: ((useWizard: UseWizard) => React.ReactNode) | React.ReactNode;
   initialStepIndex?: number;
+  onChange?: OnChangeHandler;
 }
 
 export const Wizard: FunctionComponent<WizardProps> = (props: WizardProps) => {
-  const internalState = useWizard({ initialStepIndex: props.initialStepIndex });
+  const internalState = useWizard({
+    initialStepIndex: props.initialStepIndex,
+    onChange: props.onChange
+  });
   return (
     <WizardContext.Provider value={{ ...internalState }}>
       {typeof props.children === "function"
