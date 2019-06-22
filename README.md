@@ -32,8 +32,8 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 
 ## Upgrading from v1
 
-- `hasBeenActive` is now false on first render. To achieve the previous behaviour you can modify your code to `hasBeenActive || isActive`
-- `maxVisitedStepIndex` has been renamed to `maxActivatedStepIndex` and will not include the currently active step if it's first rendered. To achieve the previous behaviour you can modify your code to `Math.max(maxActivatedStepIndex, activeStepIndex)`
+- `hasBeenActive` is now false on first render. To achieve the previous behavior you can modify your code to `hasBeenActive || isActive`
+- `maxVisitedStepIndex` has been renamed to `maxActivatedStepIndex` and will not include the currently active step if it's first rendered. To achieve the previous behavior you can modify your code to `Math.max(maxActivatedStepIndex, activeStepIndex)`
 
 ## The Problem
 
