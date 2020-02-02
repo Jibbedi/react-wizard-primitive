@@ -89,6 +89,12 @@ const TestComponent = ({ initialStepIndex = 0, onChange = null }: any) => {
             Move to first step
           </button>
           <button
+            data-testid="global-move-skip-change"
+            onClick={(_: never) => moveToStep(0, { skipOnChangeHandler: true })}
+          >
+            Move to first step
+          </button>
+          <button
             data-testid="global-reset"
             onClick={(_: never) => resetToStep(0)}
           >
@@ -345,4 +351,18 @@ test("it should call onChange handler", () => {
     newStepIndex: 0,
     maxActivatedStepIndex: 1
   });
+});
+
+test("it should skip onChange handler when param is passed", () => {
+  const handler = jest.fn();
+
+  const container = render(<TestComponent onChange={handler} />);
+  expect(handler).not.toHaveBeenCalled();
+
+  fireEvent.click(container.queryByTestId("next-button")!);
+  expect(handler).toHaveBeenCalledTimes(1);
+
+  fireEvent.click(container.queryByTestId("global-move-skip-change")!);
+  //Validate that it's not been called again;
+  expect(handler).toHaveBeenCalledTimes(1);
 });

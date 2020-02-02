@@ -11,12 +11,24 @@ export interface GetStepOptions {
   routeTitle?: string;
 }
 
+export interface StepNavigationOptions {
+  skipOnChangeHandler?: boolean;
+}
+
+// Only used for internal state handling and not exposed to public
+interface InternalGoToStepOptions {
+  resetMaxStepIndex?: boolean;
+}
+
+// Merge internal API and public API together to be passed as options to internal goToStep function
+type GoToStepOptions = InternalGoToStepOptions & StepNavigationOptions;
+
 export interface UseWizard {
   activeStepIndex: number;
   maxActivatedStepIndex: number;
-  goToStep: (stepIndex: number) => void;
-  moveToStep: (stepIndex: number) => void;
-  resetToStep: (stepIndex: number) => void;
+  goToStep: (stepIndex: number, options?: StepNavigationOptions) => void;
+  moveToStep: (stepIndex: number, options?: StepNavigationOptions) => void;
+  resetToStep: (stepIndex: number, options?: StepNavigationOptions) => void;
   nextStep: () => void;
   previousStep: () => void;
   getStep: (options?: GetStepOptions) => Step;
@@ -37,6 +49,8 @@ type OnChangeHandler = (props: {
   previousStepIndex: number;
   maxActivatedStepIndex: number;
 }) => void;
+
+type GoToStep = (stepIndex: number, options?: GoToStepOptions) => void;
 
 export interface UseWizardProps {
   initialStepIndex?: number;
@@ -115,18 +129,25 @@ export const useWizard = ({
     return stepState;
   };
 
-  const goToStep = (stepIndex: number, { resetMaxStepIndex = false } = {}) => {
+  const goToStep: GoToStep = (
+    stepIndex: number,
+    {
+      resetMaxStepIndex = false,
+      skipOnChangeHandler = false
+    }: GoToStepOptions = {}
+  ) => {
     if (activeStepIndex !== stepIndex) {
       const newMaxStepIndex = resetMaxStepIndex
         ? stepIndex - 1
         : Math.max(activeStepIndex, maxActivatedStepIndex);
 
-      onChange &&
+      if (onChange && !skipOnChangeHandler) {
         onChange({
           previousStepIndex: activeStepIndex,
           newStepIndex: stepIndex,
           maxActivatedStepIndex: newMaxStepIndex
         });
+      }
 
       setActiveStepIndex(stepIndex);
       setMaxActivatedStepIndex(newMaxStepIndex);
@@ -141,12 +162,12 @@ export const useWizard = ({
     goToStep(Math.max(activeStepIndex - 1, 0));
   };
 
-  const moveToStep = (stepIndex: number) => {
-    goToStep(stepIndex);
+  const moveToStep = (stepIndex: number, options?: StepNavigationOptions) => {
+    goToStep(stepIndex, { ...options });
   };
 
-  const resetToStep = (stepIndex: number) => {
-    goToStep(stepIndex, { resetMaxStepIndex: true });
+  const resetToStep = (stepIndex: number, options?: StepNavigationOptions) => {
+    goToStep(stepIndex, { resetMaxStepIndex: true, ...options });
   };
 
   return {
