@@ -121,15 +121,19 @@ Call this to proceed to the previous step
 
 #### moveToStep
 
-> function(stepIndex : number)
+> function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})
 
 Move to step with index _stepIndex_
 
+You can pass in options to control if the _onChange_ handler should be called for this operation.
+
 #### resetToStep
 
-> function(stepIndex : number)
+> function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})
 
 Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false.
+
+You can pass in options to control if the _onChange_ handler should be called for this operation.
 
 #### getStep
 
