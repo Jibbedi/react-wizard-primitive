@@ -393,6 +393,8 @@ Take a look at those examples to get an idea of what's possible.
     <td align="center"><a href="http://www.josemiguel.org"><img src="https://avatars0.githubusercontent.com/u/6037190?v=4" width="100px;" alt="Jose Miguel Bejarano"/><br /><sub><b>Jose Miguel Bejarano</b></sub></a><br /><a href="#ideas-xDae" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/kaYcee"><img src="https://avatars1.githubusercontent.com/u/1464822?v=4" width="100px;" alt="kaYcee"/><br /><sub><b>kaYcee</b></sub></a><br /><a href="#ideas-kaYcee" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/kaldebert"><img src="https://avatars2.githubusercontent.com/u/10433270?v=4" width="100px;" alt="Kevin Aldebert"/><br /><sub><b>Kevin Aldebert</b></sub></a><br /><a href="#ideas-kaldebert" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.carscx.com"><img src="https://avatars2.githubusercontent.com/u/7082868?v=4" width="100px;" alt="Carlos Santos"/><br /><sub><b>Carlos Santos</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/issues?q=author%3Acarscx" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/andreibeneatol"><img src="https://avatars2.githubusercontent.com/u/38000968?v=4" width="100px;" alt="Andrei Benea"/><br /><sub><b>Andrei Benea</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/issues?q=author%3Aandreibeneatol" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 

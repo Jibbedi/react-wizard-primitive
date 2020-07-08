@@ -49,6 +49,24 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "carscx",
+      "name": "Carlos Santos",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7082868?v=4",
+      "profile": "http://www.carscx.com",
+      "contributions": [
+        "bug"
+      ]
+    },
+    {
+      "login": "andreibeneatol",
+      "name": "Andrei Benea",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/38000968?v=4",
+      "profile": "https://github.com/andreibeneatol",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7
