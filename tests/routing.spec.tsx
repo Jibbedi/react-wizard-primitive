@@ -1,5 +1,5 @@
 import React from "react";
-import { Wizard, WizardStep } from "../src";
+import { Wizard, WizardStep, useWizard } from "../src";
 import { cleanup, fireEvent, render } from "react-testing-library";
 import * as routing from "../src/routing";
 
@@ -131,6 +131,21 @@ const TestComponentWithoutAnyRouteTitles = () => {
   );
 };
 
+const ConditionallyRenderedSteps = () => {
+  const { getStep } = useWizard();
+  const [list, setList] = React.useState<string[]>([]);
+  return (
+    <div>
+      {list.map(
+        (entry) =>
+          getStep({ routeTitle: entry }).isActive && (
+            <div key={entry}>{entry}</div>
+          )
+      )}
+    </div>
+  );
+};
+
 const verifyOnlyFirstStepIsVisible = (container: any) => {
   expect(container.queryByTestId("step-1")).toBeTruthy();
   expect(container.queryByTestId("step-2")).toBeNull();
@@ -217,4 +232,10 @@ test("it should not update hash location if window is not defined (ssr)", () => 
 
   expect(window.location.hash).toBe("");
   expect(consoleSpy).not.toBeCalled();
+});
+
+test("it should work with conditionally rendered steps", () => {
+  const { rerender } = render(<ConditionallyRenderedSteps />);
+  rerender(<ConditionallyRenderedSteps />);
+  expect(window.location.hash).toBe("");
 });

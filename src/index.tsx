@@ -3,7 +3,7 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import { getRoutingHash, setRoutingHash } from "./routing";
 
@@ -61,7 +61,7 @@ const WizardContext = React.createContext<UseWizard | null>(null);
 
 export const useWizard = ({
   initialStepIndex = 0,
-  onChange
+  onChange,
 }: UseWizardProps = {}) => {
   const [activeStepIndex, setActiveStepIndex] = useState(initialStepIndex);
   const [maxActivatedStepIndex, setMaxActivatedStepIndex] = useState(
@@ -84,7 +84,14 @@ export const useWizard = ({
 
   // update location hash
   useEffect(() => {
-    const stepsWithTitle = stepTitles.filter(title => !!title);
+    /*
+      return early if no step has been created
+    */
+    if (stepCheckIndex === 0) {
+      return;
+    }
+
+    const stepsWithTitle = stepTitles.filter((title) => !!title);
     const allStepTitlesAvailable = stepsWithTitle.length === stepCheckIndex;
     const allStepTitlesMissing = stepsWithTitle.length === 0;
 
@@ -97,7 +104,7 @@ export const useWizard = ({
     if (!allStepTitlesMissing) {
       const indicesOfMissingTitles = stepTitles
         .map((title, index) => (!title ? index : null))
-        .filter(title => title !== null);
+        .filter((title) => title !== null);
 
       console.warn(
         `You have not specified a title for the steps with the indices: ${indicesOfMissingTitles.join(
@@ -110,7 +117,7 @@ export const useWizard = ({
   }, [activeStepIndex]);
 
   const getStep: (options?: GetStepOptions) => Step = ({
-    routeTitle
+    routeTitle,
   }: GetStepOptions = {}) => {
     const stepIndex = stepCheckIndex;
 
@@ -123,7 +130,7 @@ export const useWizard = ({
       nextStep: () => goToStep(stepIndex + 1),
       previousStep: () => goToStep(Math.max(stepIndex - 1, 0)),
       resetToStep: () => goToStep(stepIndex, { resetMaxStepIndex: true }),
-      moveToStep: () => goToStep(stepIndex)
+      moveToStep: () => goToStep(stepIndex),
     };
     stepCheckIndex++;
     return stepState;
@@ -133,7 +140,7 @@ export const useWizard = ({
     stepIndex: number,
     {
       resetMaxStepIndex = false,
-      skipOnChangeHandler = false
+      skipOnChangeHandler = false,
     }: GoToStepOptions = {}
   ) => {
     if (activeStepIndex !== stepIndex) {
@@ -145,7 +152,7 @@ export const useWizard = ({
         onChange({
           previousStepIndex: activeStepIndex,
           newStepIndex: stepIndex,
-          maxActivatedStepIndex: newMaxStepIndex
+          maxActivatedStepIndex: newMaxStepIndex,
         });
       }
 
@@ -178,7 +185,7 @@ export const useWizard = ({
     previousStep,
     getStep,
     moveToStep,
-    resetToStep
+    resetToStep,
   };
 };
 
@@ -191,7 +198,7 @@ export interface WizardProps {
 export const Wizard: FunctionComponent<WizardProps> = (props: WizardProps) => {
   const internalState = useWizard({
     initialStepIndex: props.initialStepIndex,
-    onChange: props.onChange
+    onChange: props.onChange,
   });
   return (
     <WizardContext.Provider value={{ ...internalState }}>
@@ -230,7 +237,7 @@ export const WizardStep: FunctionComponent<WizardStepProps> = (
   if (contextRef.current !== wizardContext) {
     contextRef.current = wizardContext;
     stepRef.current = wizardContext.getStep({
-      routeTitle: props.routeTitle
+      routeTitle: props.routeTitle,
     });
   }
 
