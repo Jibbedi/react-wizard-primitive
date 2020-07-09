@@ -319,7 +319,9 @@ A hook that let's you split your wizard into separate components and creates a [
 
 - _options_ `WizardStepOptions` (optional)
   > It can take an optional options object, which can take a `routeTitle` [See routing](#routing) for more details.
-  > **Returns**
+
+**Returns**
+
 - A [Step object](#step)
 
 #### Example
