@@ -1,12 +1,10 @@
-<h1 align="center">
-🧙 React Wizard Primitive 🦕
-</h1>
+<div style="text-align:center;">
+<img width="100%" src="https://res.cloudinary.com/dgeve7dao/image/upload/v1594285568/react_wizard_logo.png">
+</div>
 
 <h4 align="center">
-Zero dependencies boilerplate for a wizard / stepper without any UI restrictions. Hooks available!
+Zero dependencies scaffold for a wizard / stepper without any UI restrictions. Hooks and render props API available!
 </h4>
-
-<hr>
 
 [![Build](https://img.shields.io/travis/Jibbedi/react-wizard-primitive.svg?style=flat)](https://travis-ci.org/Jibbedi/react-wizard-primitive)
 [![Coverage](https://img.shields.io/codecov/c/gh/Jibbedi/react-wizard-primitive.svg?style=flat)](https://codecov.io/gh/Jibbedi/react-wizard-primitive)
@@ -19,22 +17,39 @@ Zero dependencies boilerplate for a wizard / stepper without any UI restrictions
 [![Downloads](https://img.shields.io/npm/dm/react-wizard-primitive.svg?style=flat)](https://www.npmjs.com/package/react-wizard-primitive)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-## Table of Contents
+[![github stars](https://img.shields.io/github/stars/jibbedi/react-wizard-primitive?label=Star&style=social)](https://github.com/Jibbedi/react-wizard-primitive)
 
-- [Upgrading from v1](#upgrading-from-v1)
+<hr>
+
+<!-- omit in toc -->
+
 - [The Problem](#the-problem)
 - [The Solution](#the-solution)
-- [Hooks API](#hooks-api)
-- [Render Props API](#render-props-api)
-- [Step](#step)
+- [Quick Start](#quick-start)
+- [Splitting the wizard in multiple components](#splitting-the-wizard-in-multiple-components)
+- [Building your own abstractions](#building-your-own-abstractions)
+- [API](#api)
+  - [`Step`](#step)
+  - [`useWizard`](#usewizard)
+    - [Example](#example)
+  - [`useWizardStep`](#usewizardstep)
+    - [Example](#example-1)
+  - [`Wizard`](#wizard)
+    - [Example](#example-2)
+  - [`WizardStep`](#wizardstep)
+    - [Example](#example-3)
 - [Routing](#routing)
+  - [Basics](#basics)
+  - [Initial Hash Route](#initial-hash-route)
+  - [Example](#example-4)
 - [Examples](#examples)
+  - [🔗 Basic Hooks](#-basic-hooks)
+  - [🔗 Basic Render Props](#-basic-render-props)
+  - [🔗 Buildup Wizard](#-buildup-wizard)
+  - [🔗 Custom Abstraction](#-custom-abstraction)
+- [Migration from older versions](#migration-from-older-versions)
+  - [Upgrading from v1](#upgrading-from-v1)
 - [Contributors](#contributors)
-
-## Upgrading from v1
-
-- `hasBeenActive` is now false on first render. To achieve the previous behavior you can modify your code to `hasBeenActive || isActive`
-- `maxVisitedStepIndex` has been renamed to `maxActivatedStepIndex` and will not include the currently active step if it's first rendered. To achieve the previous behavior you can modify your code to `Math.max(maxActivatedStepIndex, activeStepIndex)`
 
 ## The Problem
 
@@ -47,248 +62,314 @@ React Wizard Primitive handles the state management and you bring the UI.
 Leverage a render props or hooks API to get rid of the tedious boilerplate.
 You can use this library to build other abstractions, that better suit your specific needs on top of it.
 
-## Basics
+## Quick Start
 
-The library comes with a render props and hooks API. It's written in TypeScript so you get first level
-type support.
-
-## Getting started
-
-Install the library with
+1. Install `react-wizard-primitive`
 
 ```bash
-npm install --save react-wizard-primitive
+npm i react-wizard-primitive
 ```
 
-import **useWizard** for the hooks API.
+2. Create your first wizard
+
+<details open>
+  <summary>Hooks API</summary>
 
 ```jsx
+import React from "react";
 import { useWizard } from "react-wizard-primitive";
-```
 
-or
-**Wizard** and **WizardStep** for the render props API.
+export default function App() {
+  const { getStep, nextStep } = useWizard();
+  const stepTitles = ["First", "Second", "Third"]; //let's render them one ofter the other
 
-```jsx
-import { Wizard, WizardStep } from "react-wizard-primitive";
-```
-
-## Hooks API
-
-### Props
-
-You can optionally pass an `UseWizardProps` into the hooks.
-
-#### initialStepIndex
-
-> number
-
-Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
-
-#### onChange
-
-> function({newStepIndex : number, previousStepIndex: number, maxActivatedStepIndex : number})
-
-Is called every time the wizard step changes.
-
-### Return Values
-
-The useWizard API returns the state and a set of helper functions.
-
-#### activeStepIndex
-
-> number
-
-Currently active step
-
-#### maxActivatedStepIndex
-
-> number
-
-Index of the furthest step, that has been activated
-
-#### nextStep
-
-> function
-
-Call this to proceed to the next step
-
-#### previousStep
-
-> function
-
-Call this to proceed to the previous step
-
-#### moveToStep
-
-> function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})
-
-Move to step with index _stepIndex_
-
-You can pass in options to control if the _onChange_ handler should be called for this operation.
-
-#### resetToStep
-
-> function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})
-
-Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false.
-
-You can pass in options to control if the _onChange_ handler should be called for this operation.
-
-#### getStep
-
-> function(options?) : Step
-
-Returns state for the current Step. This needs to be called for each wizard step you want to render.
-First call will return information about the first step, second call about the second, etc.
-
-It accepts an _optional_ options object, which takes a string routeTitle in.
-See [Routing](#routing) for further information.
-
-### Example
-
-```jsx
-const wizard = useWizard();
-const step1 = wizard.getStep();
-const step2 = wizard.getStep();
-const step3 = wizard.getStep();
-
-return (
-  <div>
-    {step1.isActive && <div onClick={step1.nextStep}>Step 1</div>}
-    {step2.isActive && <div onClick={step2.nextStep}>Step 2</div>}
-    {step3.isActive && <div onClick={step3.nextStep}>Step 3</div>}
-  </div>
-);
-```
-
-## Render Props API
-
-### Wizard
-
-> Component
-
-The Wizard component uses **useWizard** internally and exposes a compound components API via Context.
-Use this as a top level component for the wizard and put any number of _WizardSteps_ in it.
-
-You can _optionally_ provide a render prop, which gets passed the same values that _useWizard_ returns.
-
-#### Props
-
-#### initialStepIndex
-
-> number
-
-Sets the `activeStepIndex` to the given index. All previous steps will be treated as if they've been already activated.
-
-#### onChange
-
-> function({newStepIndex : number, previousStepIndex: number, maxActivatedStepIndex : number})
-
-Is called every time the wizard step changes.
-
-### WizardStep
-
-> Component
-
-The WizardStep component exposed a render props API and passes a _Step_ to it.
-The step index is determined by the order in the source code.
-
-It takes an optional string _routeTitle_ as a prop. See [Routing](#routing) for further information.
-
-### Example
-
-```jsx
-<Wizard>
-  <WizardStep>
-    {({ isActive, nextStep }) =>
-      isActive && <div onClick={nextStep}>Step 1</div>
-    }
-  </WizardStep>
-
-  <WizardStep>
-    {({ isActive, nextStep }) =>
-      isActive && <div onClick={nextStep}>Step 2</div>
-    }
-  </WizardStep>
-
-  <WizardStep>
-    {({ isActive, nextStep }) =>
-      isActive && <div onClick={nextStep}>Step 3</div>
-    }
-  </WizardStep>
-</Wizard>
-```
-
-or with render props:
-
-```jsx
-<Wizard>
-  {({ activeStepIndex }) => (
+  return (
     <div>
-      Active Step is: {activeStepIndex}
-      <WizardStep>
-        {({ isActive, nextStep }) =>
-          isActive && <div onClick={nextStep}>Step 1</div>
-        }
-      </WizardStep>
-      <WizardStep>
-        {({ isActive, nextStep }) =>
-          isActive && <div onClick={nextStep}>Step 2</div>
-        }
-      </WizardStep>
-      <WizardStep>{({ isActive, nextStep }) => isActive && <div onClick={nextStep}>Step 3</div>}</WizardStep>
+      {stepTitles.map(
+        (stepTitle) =>
+          getStep().isActive && <div onClick={nextStep}>{stepTitle}</div>
+      )}
     </div>
-  )}
+  );
+}
+```
+
+See a working example [here](https://codesandbox.io/s/condescending-minsky-7xy50?file=/src/App.tsx:0-415).
+
+</details>
+
+<details>
+  <summary>Render Props API</summary>
+
+```jsx
+import React from "react";
+import { Wizard } from "react-wizard-primitive";
+
+export default function App() {
+  const stepTitles = ["First", "Second", "Third"]; //let's render them one ofter the other
+
+  return (
+    <Wizard>
+      {({ getStep, nextStep }) => (
+        <div>
+          {stepTitles.map(
+            (stepTitle) =>
+              getStep().isActive && <div onClick={nextStep}>{stepTitle}</div>
+          )}
+        </div>
+      )}
+    </Wizard>
+  );
+}
+```
+
+See a working example [here](https://codesandbox.io/s/wandering-smoke-qokqu?file=/src/App.tsx:0-463).
+
+</details>
+
+## Splitting the wizard in multiple components
+
+Using the `getStep` function is great if you are creating a small wizard which can live inside a single component.
+
+If your wizard grows it can come in handy to separate each step inside it's own component.
+`react-wizard-primitive` makes this really easy.
+
+1. Put a `Wizard` Component as your wizard root
+2. Create Step components. All step components inside one Wizard Component work together.
+
+<details open>
+  <summary>Hooks API</summary>
+
+```jsx
+import React from "react";
+import { Wizard, useWizardStep } from "react-wizard-primitive";
+
+const FirstStep = () => {
+  const { isActive, nextStep } = useWizardStep();
+  return isActive ? <div onClick={nextStep}>First Step</div> : null;
+};
+
+const SecondStep = () => {
+  const { isActive, nextStep } = useWizardStep();
+  return isActive ? <div onClick={nextStep}>Second Step</div> : null;
+};
+
+export default function App() {
+  return (
+    <Wizard>
+      <FirstStep />
+      {/* a step doesn't need to be a direct child of the wizard. It can be nested inside of html or react components, too!*/}
+      <div>
+        <SecondStep />
+      </div>
+    </Wizard>
+  );
+}
+```
+
+See a working example [here](https://codesandbox.io/s/focused-cohen-u5lhx?file=/src/App.tsx).
+
+</details>
+
+<details>
+  <summary>Render Props API</summary>
+
+```jsx
+import React from "react";
+import { Wizard, WizardStep } from "react-wizard-primitive";
+
+const FirstStep = () => {
+  return (
+    <WizardStep>
+      {({ isActive, nextStep }) =>
+        isActive ? <div onClick={nextStep}>First Step</div> : null
+      }
+    </WizardStep>
+  );
+};
+
+const SecondStep = () => {
+  return (
+    <WizardStep>
+      {({ isActive, nextStep }) =>
+        isActive ? <div onClick={nextStep}>Second Step</div> : null
+      }
+    </WizardStep>
+  );
+};
+
+export default function App() {
+  return (
+    <Wizard>
+      <FirstStep />
+      {/* a step doesn't need to be a direct child of the wizard. It can be nested inside of html or react components, too!*/}
+      <div>
+        <SecondStep />
+      </div>
+      {/* WizardStep can also be used without placing it inside another component*/}
+      <WizardStep>
+        {({ isActive }) => (isActive ? <div>Third Step</div> : null)}
+      </WizardStep>
+    </Wizard>
+  );
+}
+```
+
+See a working example [here](https://codesandbox.io/s/cool-leaf-nucyl?file=/src/App.tsx:0-939).
+
+</details>
+
+## Building your own abstractions
+
+Sometimes you need a wizard in multiple places, but keep the styling consistent.
+`react-wizard-primitive` provides you with basic building blocks that you can use to build powerful abstractions on top of it.
+
+```jsx
+<MyCustomWizard>
+  <MyCustomWizard.Step>
+    <TextFields />
+  </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <div>Just some other inline jsx</div>
+  </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <div>And another one</div>
+  </MyCustomWizard.Step>
+  <MyCustomWizard.Step>
+    <div>Last one</div>
+  </MyCustomWizard.Step>
+</MyCustomWizard>
+```
+
+See a working example [here](https://codesandbox.io/s/wwo9x7p1k).
+
+## API
+
+### `Step`
+
+A step is the main data structure for the wizard. It is returned by the `getStep` call and provided by `useWizardStep` and the `WizardStep` component.
+
+- _index_ `number`
+  > The index of the current step
+- _isActive_ `boolean`
+  > Is the state the currently active one?
+- _hasBeenActive_ `boolean`
+  > Has the step been active before?
+- _nextStep_ `function`
+  > Move to the step _after_ this step.
+- _previousStep_ `function`
+  > Move to the step _before_ this step.
+- _resetToStep_ `function`
+  > Set this step to be currently active. Set hasBeenActive for all following steps to false.
+- _moveToStep_ `function`
+  > Set this step to be currently active. All following steps will keep the activated state.
+
+### `useWizard`
+
+A hook that manages the state of the wizard and provides you with functions to interact with it
+
+**Arguments**
+
+- _options_ `object` (optional)
+
+  - _initialStepIndex_ `number` (optional)
+
+    > The provided step index will be displayed initially. All previous steps will be treated as if they've been already activated.
+
+  - _onChange_ `function({newStepIndex : number, previousStepIndex: number, maxActivatedStepIndex : number})` (optional)
+    > Is called every time the wizard step changes.
+
+**Returns**
+
+- _wizard_ `object`
+  - _getStep_ `function(options?) : Step`
+    > Creates a [wizard step](#Step) and provides it's current state. It can take an optional options object, which can take a `routeTitle` [See routing](#routing) for more details.
+  - _activeStepIndex_ `number`
+    > Currently active step
+  - _maxActivatedStepIndex_ `number`
+    > Index of the furthest step, that has been activated
+  - _maxActivatedStepIndex_ `number`
+    > Index of the furthest step, that has been activated
+  - _nextStep_ `function`
+    > Call this to proceed to the next step
+  - _previousStep_ `function`
+    > Call this to proceed to the previous step
+  - _moveToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
+    > Move to step with index _stepIndex_. You can pass in options to control if the _onChange_ handler should be called for this operation.
+  - _resetToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
+    > Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false. You can pass in options to control if the _onChange_ handler should be called for this operation.
+
+#### Example
+
+```jsx
+// start at third step and log every change
+const { getStep } = useWizard({
+  initialStepIndex: 2,
+  onChange: ({ newStepIndex, previousStepIndex }) => {
+    console.log(`I moved from step ${previousStepIndex} to ${newStepIndex}`);
+  },
+});
+```
+
+### `useWizardStep`
+
+A hook that let's you split your wizard into separate components and creates a [wizard step](#Step). It calls `getStep` under the hood.
+
+**Arguments**
+
+- _options_ `WizardStepOptions` (optional)
+  > It can take an optional options object, which can take a `routeTitle` [See routing](#routing) for more details.
+
+**Returns**
+
+- A [Step object](#step)
+
+#### Example
+
+```jsx
+// isActive will be true if this wizardStep should be rendered, nextStep will move to the next step
+const { isActive, nextStep } = useWizardStep();
+```
+
+### `Wizard`
+
+A component that servers as the root for a wizard if you choose to split your wizard into [multiple components](#Splitting-the-wizard-in-multiple-components).
+
+Otherwise it can be used as a replacement for the `useWizard` hook.
+It takes the same arguments **(as props)** and returns the same values **to the render prop**.
+
+#### Example
+
+```jsx
+// start at third step and log every change
+<Wizard initialStepIndex="2" onChange={({newStepIndex, previousStepIndex}) => {
+  console.log(`I moved from step ${previousStepIndex} to ${newStepIndex}`);
+}}>
+{
+  ({getStep}) => {
+    ...
+  }
+}
 </Wizard>
 ```
 
-## Step
+### `WizardStep`
 
-A step is the main data structure for the wizard.
-It contains the following information:
+A component that serves as an alternative to the `useWizardStep` hook.
+It takes the same arguments **(as props)** and returns the same values **to the render prop**.
 
-### index
+#### Example
 
-> number
-
-The index of the current step
-
-### isActive
-
-> boolean
-
-Is the state the currently active one?
-
-### hasBeenActive
-
-> boolean
-
-Has the step been active before?
-
-### nextStep
-
-> function
-
-Move to the step _after_ this step.
-
-### previousStep
-
-> function
-
-Move to the step _before_ this step.
-
-### resetToStep
-
-> function
-
-Set this step to be currently active. Set hasBeenActive for all following steps to false.
-
-### moveToStep
-
-> function
-
-Set this step to be currently active. All following steps will keep the activated state.
+```jsx
+// isActive will be true if this wizardStep should be rendered, nextStep will move to the next step
+<WizardStep>
+{
+  ({isActive, nextStep}) => {
+    ...
+  }
+}
+</WizardStep>
+```
 
 ## Routing
 
@@ -296,7 +377,7 @@ Set this step to be currently active. All following steps will keep the activate
 
 Out of the box react-wizard-primitive supports an opt-in routing via hash.
 
-In order to use it, you need to specify a routeTitle in the getStep call or pass it as a prop to the _WizardStep_.
+In order to use it, you need to specify a routeTitle in the getStep call or pass it as a prop to the _WizardStep_ or _useWizardStep_ hook.
 The routeTitle will be used as the hash.
 
 If no routeTitle is provided, react-wizard-primitive won't make any changes to the URL.
@@ -382,6 +463,13 @@ Take a look at those examples to get an idea of what's possible.
 
 ![Buildup Wizard](https://media.giphy.com/media/8PBsWFyO1haMFsbQLp/giphy.gif)
 
+## Migration from older versions
+
+### Upgrading from v1
+
+- `hasBeenActive` is now false on first render. To achieve the previous behavior you can modify your code to `hasBeenActive || isActive`
+- `maxVisitedStepIndex` has been renamed to `maxActivatedStepIndex` and will not include the currently active step if it's first rendered. To achieve the previous behavior you can modify your code to `Math.max(maxActivatedStepIndex, activeStepIndex)`
+
 ## Contributors
 
 <!-- prettier-ignore -->
@@ -399,3 +487,7 @@ Take a look at those examples to get an idea of what's possible.
 </table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
+
+```
+
+```
