@@ -191,7 +191,7 @@ export interface UseWizardStepProps {
 
 export const useWizardStep = ({
   routeTitle,
-}: UseWizardStepProps): Step | null => {
+}: UseWizardStepProps = {}): Step => {
   const wizardContext = React.useContext(WizardContext);
 
   if (wizardContext === null) {
@@ -216,5 +216,5 @@ export const useWizardStep = ({
     });
   }
 
-  return stepRef.current;
+  return stepRef.current!;
 };

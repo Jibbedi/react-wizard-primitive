@@ -37,5 +37,5 @@ export interface WizardStepProps {
 export const WizardStep: React.FC<WizardStepProps> = (
   props: WizardStepProps
 ) => {
-  return props.children(useWizardStep({ routeTitle: props.routeTitle })!);
+  return props.children(useWizardStep({ routeTitle: props.routeTitle }));
 };
