@@ -74,28 +74,27 @@ npm i react-wizard-primitive
 
 <details open>
   <summary>Hooks API</summary>
-  
-  ```jsx
-  import React from "react";
-  import { useWizard } from "react-wizard-primitive";
+
+```jsx
+import React from "react";
+import { useWizard } from "react-wizard-primitive";
 
 export default function App() {
-const { getStep, nextStep } = useWizard();
-const stepTitles = ["First", "Second", "Third"]; //let's render them one ofter the other
+  const { getStep, nextStep } = useWizard();
+  const stepTitles = ["First", "Second", "Third"]; //let's render them one ofter the other
 
-return (
-
-  <div>
-    {stepTitles.map(
-      (stepTitles) =>
-      getStep().isActive && <div onClick={nextStep}>{stepTitles}</div>
-    }
-</div>
-);
+  return (
+    <div>
+      {stepTitles.map(
+        (stepTitle) =>
+          getStep().isActive && <div onClick={nextStep}>{stepTitle}</div>
+      )}
+    </div>
+  );
 }
 ```
 
-See a working example [here](https://codesandbox.io/s/friendly-lamport-t2o9f?file=/src/App.tsx).
+See a working example [here](https://codesandbox.io/s/condescending-minsky-7xy50?file=/src/App.tsx:0-415).
 
 </details>
 
