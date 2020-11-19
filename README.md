@@ -263,6 +263,8 @@ A step is the main data structure for the wizard. It is returned by the `getStep
   > Set this step to be currently active. Set hasBeenActive for all following steps to false.
 - _moveToStep_ `function`
   > Set this step to be currently active. All following steps will keep the activated state.
+- _goToStep_ `function(index:number)`
+  > Go to the step with the given index
 
 ### `useWizard`
 

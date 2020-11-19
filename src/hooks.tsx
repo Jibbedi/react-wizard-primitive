@@ -36,6 +36,7 @@ export interface Step {
   previousStep: () => void;
   resetToStep: () => void;
   moveToStep: () => void;
+  goToStep: (index: number) => void;
 }
 
 export type OnChangeHandler = (props: {
@@ -127,6 +128,7 @@ export const useWizard = ({
       previousStep: () => goToStep(Math.max(stepIndex - 1, 0)),
       resetToStep: () => goToStep(stepIndex, { resetMaxStepIndex: true }),
       moveToStep: () => goToStep(stepIndex),
+      goToStep: (index: number) => goToStep(index)
     };
     stepCheckIndex++;
     return stepState;
