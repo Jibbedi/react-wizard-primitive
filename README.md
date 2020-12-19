@@ -81,7 +81,7 @@ import { useWizard } from "react-wizard-primitive";
 
 export default function App() {
   const { getStep, nextStep } = useWizard();
-  const stepTitles = ["First", "Second", "Third"]; //let's render them one ofter the other
+  const stepTitles = ["First", "Second", "Third"]; //let's render them one after the other
 
   return (
     <div>
@@ -259,12 +259,12 @@ A step is the main data structure for the wizard. It is returned by the `getStep
   > Move to the step _after_ this step.
 - _previousStep_ `function`
   > Move to the step _before_ this step.
-- _resetToStep_ `function`
-  > Set this step to be currently active. Set hasBeenActive for all following steps to false.
-- _moveToStep_ `function`
-  > Set this step to be currently active. All following steps will keep the activated state.
-- _goToStep_ `function(index:number)`
-  > Go to the step with the given index
+- _resetToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
+  > Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false. You can pass in options to control if the _onChange_ handler should be called for this operation.
+- _moveToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
+  > Set this step to be currently active. All following steps will keep the activated state. You can pass in options to control if the _onChange_ handler should be called for this operation. `moveToStep` is an alias of `goToStep`.
+- _goToStep_ ``function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})``
+  > Go to the step with the given index. You can pass in options to control if the _onChange_ handler should be called for this operation.
 
 ### `useWizard`
 
@@ -290,16 +290,16 @@ A hook that manages the state of the wizard and provides you with functions to i
     > Currently active step
   - _maxActivatedStepIndex_ `number`
     > Index of the furthest step, that has been activated
-  - _maxActivatedStepIndex_ `number`
-    > Index of the furthest step, that has been activated
   - _nextStep_ `function`
     > Call this to proceed to the next step
   - _previousStep_ `function`
     > Call this to proceed to the previous step
-  - _moveToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
-    > Move to step with index _stepIndex_. You can pass in options to control if the _onChange_ handler should be called for this operation.
   - _resetToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
     > Move to step with index _stepIndex_. Set _hasBeenActive_ for all following steps as well as the new step to false. You can pass in options to control if the _onChange_ handler should be called for this operation.
+  - _moveToStep_ `function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})`
+    > Move to step with index _stepIndex_. You can pass in options to control if the _onChange_ handler should be called for this operation. `moveToStep` is an alias of `goToStep`.
+  - _goToStep_ ``function(stepIndex : number, options? : {skipOnChangeHandler?: boolean})``
+    > Go to the step with the given index. You can pass in options to control if the _onChange_ handler should be called for this operation.
 
 #### Example
 
@@ -476,17 +476,22 @@ Take a look at those examples to get an idea of what's possible.
 
 <!-- prettier-ignore -->
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://turnpro.in"><img src="https://avatars3.githubusercontent.com/u/19505532?v=4" width="100px;" alt="Johannes Kling"/><br /><sub><b>Johannes Kling</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Code">💻</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Documentation">📖</a> <a href="#ideas-Jibbedi" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-Jibbedi" title="Examples">💡</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Tests">⚠️</a></td>
-    <td align="center"><a href="http://www.josemiguel.org"><img src="https://avatars0.githubusercontent.com/u/6037190?v=4" width="100px;" alt="Jose Miguel Bejarano"/><br /><sub><b>Jose Miguel Bejarano</b></sub></a><br /><a href="#ideas-xDae" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/kaYcee"><img src="https://avatars1.githubusercontent.com/u/1464822?v=4" width="100px;" alt="kaYcee"/><br /><sub><b>kaYcee</b></sub></a><br /><a href="#ideas-kaYcee" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="https://github.com/kaldebert"><img src="https://avatars2.githubusercontent.com/u/10433270?v=4" width="100px;" alt="Kevin Aldebert"/><br /><sub><b>Kevin Aldebert</b></sub></a><br /><a href="#ideas-kaldebert" title="Ideas, Planning, & Feedback">🤔</a></td>
-    <td align="center"><a href="http://www.carscx.com"><img src="https://avatars2.githubusercontent.com/u/7082868?v=4" width="100px;" alt="Carlos Santos"/><br /><sub><b>Carlos Santos</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/issues?q=author%3Acarscx" title="Bug reports">🐛</a></td>
-    <td align="center"><a href="https://github.com/andreibeneatol"><img src="https://avatars2.githubusercontent.com/u/38000968?v=4" width="100px;" alt="Andrei Benea"/><br /><sub><b>Andrei Benea</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/issues?q=author%3Aandreibeneatol" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://turnpro.in"><img src="https://avatars3.githubusercontent.com/u/19505532?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Johannes Kling</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Code">💻</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Documentation">📖</a> <a href="#ideas-Jibbedi" title="Ideas, Planning, & Feedback">🤔</a> <a href="#example-Jibbedi" title="Examples">💡</a> <a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Jibbedi" title="Tests">⚠️</a></td>
+    <td align="center"><a href="http://www.josemiguel.org"><img src="https://avatars0.githubusercontent.com/u/6037190?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jose Miguel Bejarano</b></sub></a><br /><a href="#ideas-xDae" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/kaYcee"><img src="https://avatars1.githubusercontent.com/u/1464822?v=4?s=100" width="100px;" alt=""/><br /><sub><b>kaYcee</b></sub></a><br /><a href="#ideas-kaYcee" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="https://github.com/kaldebert"><img src="https://avatars2.githubusercontent.com/u/10433270?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Kevin Aldebert</b></sub></a><br /><a href="#ideas-kaldebert" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.carscx.com"><img src="https://avatars2.githubusercontent.com/u/7082868?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Carlos Santos</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/issues?q=author%3Acarscx" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/andreibeneatol"><img src="https://avatars2.githubusercontent.com/u/38000968?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Andrei Benea</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/issues?q=author%3Aandreibeneatol" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://github.com/Uzwername"><img src="https://avatars2.githubusercontent.com/u/21230845?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Uzwername</b></sub></a><br /><a href="https://github.com/Jibbedi/react-wizard-primitive/commits?author=Uzwername" title="Documentation">📖</a></td>
   </tr>
 </table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
